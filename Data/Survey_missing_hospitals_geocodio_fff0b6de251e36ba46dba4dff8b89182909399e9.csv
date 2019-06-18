@@ -1,0 +1,4 @@
+Addresses:,Latitude,Longitude,"Accuracy Score","Accuracy Type",Number,Street,City,State,County,Zip,Country,Source
+"1441 EASTLAKE AVE, LOS ANGELES, CA, 90033",34.061179,-118.206313,1,rooftop,1441,"Eastlake Ave","Los Angeles",CA,"Los Angeles County",90033,US,"Los Angeles County"
+"1475 NW 12TH AVE, MIAMI, FL, 33136",25.788798,-80.214585,1,rooftop,1475,"NW 12th Ave",Miami,FL,"Miami-Dade County",33136,US,Miami
+"460 WEST TENTH AVENUE, COLUMBUS, OH, 43210",39.994715,-83.019935,1,rooftop,460,"W 10th Ave",Columbus,OH,"Franklin County",43210,US,Franklin

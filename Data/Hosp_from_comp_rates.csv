@@ -1,0 +1,173 @@
+Address,Latitude,Longitude,"Accuracy Score","Accuracy Type",Number,Street,City,State,County,Zip,Country,Source
+"673 MDG 5955 Zeamer Ave, JBER, AK, 99506",61.257409,-149.804165,0.33,place,,,"Elmendorf Afb",AK,"Anchorage Municipality",99506,US,"TIGER/Line® dataset from the US Census Bureau"
+"1500 E. WOODROW WILSON DRIVE, JACKSON, MS, 39216",32.328255,-90.168455,1,rooftop,1500,"E Woodrow Wilson Ave",Jackson,MS,"Hinds County",39216,US,Hinds
+"400 VETERANS AVENUE, BILOXI, MS, 39531",30.414247,-88.947231,1,range_interpolation,400,"Veterans Ave",Biloxi,MS,"Harrison County",39531,US,"TIGER/Line® dataset from the US Census Bureau"
+"915 NORTH GRAND, ST. LOUIS, MO, 63106",38.642581,-90.231562,0.9,rooftop,915,"N Grand Blvd","Saint Louis",MO,"St. Louis city",63108,US,"City of St Louis"
+"4801 LINWOOD BLVD., KANSAS CITY, MO, 64128",39.067104,-94.527525,1,range_interpolation,4801,"Linwood Blvd","Kansas City",MO,"Jackson County",64128,US,"TIGER/Line® dataset from the US Census Bureau"
+"1500 N. WESTWOOD BLVD., POPLAR BLUFF, MO, 63901",36.771517,-90.417831,1,range_interpolation,1500,"N Westwood Blvd","Poplar Bluff",MO,"Butler County",63901,US,"TIGER/Line® dataset from the US Census Bureau"
+"126 Missouri Avenue, Fort Leonard Wood, MO, 65473",37.767546,-92.116358,1,range_interpolation,126,"Missouri Ave","Fort Leonard Wood",MO,"Pulaski County",65473,US,"TIGER/Line® dataset from the US Census Bureau"
+"800 HOSPITAL DR, COLUMBIA, MO, 65201",38.937274,-92.328882,1,rooftop,800,"Hospital Dr",Columbia,MO,"Boone County",65201,US,Boone
+"3687 VETERANS DRIVE, FORT HARRISON, MT, 59636",46.61777,-112.101605,1,rooftop,3687,"Veterans Dr","Fort Harrison",MT,"Lewis and Clark County",59636,US,Helena
+"4101 WOOLWORTH AVENUE, OMAHA, NE, 68105",41.242962,-95.974274,1,rooftop,4101,"Woolworth Ave",Omaha,NE,"Douglas County",68105,US,Douglas
+"975 KIRMAN AVENUE, RENO, NV, 89502",39.516316,-119.799037,1,rooftop,975,"Kirman Ave",Reno,NV,"Washoe County",89502,US,Washoe
+"6900 NORTH PECOS ROAD, N. LAS VEGAS, NV, 89086",36.285829,-115.094063,1,rooftop,6900,"N Pecos Rd","North Las Vegas",NV,"Clark County",89086,US,"Las Vegas"
+"385 TREMONT AVENUE, EAST ORANGE, NJ, 7018",40.753899,-74.233858,1,range_interpolation,385,"Tremont Ave","East Orange",NJ,"Essex County",07018,US,"TIGER/Line® dataset from the US Census Bureau"
+"1501 SAN PEDRO DRIVE SE, ALBUQUERQUE, NM, 87108",35.057426,-106.585815,1,rooftop,1501,"San Pedro Dr SE",Albuquerque,NM,"Bernalillo County",87108,US,Albuquerque
+"3350 LA JOLLA VILLAGE DRIVE, SAN DIEGO, CA, 92161",32.875206,-117.231684,1,rooftop,3350,"La Jolla Village Dr","San Diego",CA,"San Diego County",92161,US,"San Diego Geographic Information Source - JPA"
+"113 HOLLAND AVENUE, ALBANY, NY, 12208",42.649409,-73.774428,0.9,range_interpolation,113,"Holland Ave",Albany,NY,"Albany County",12208,US,"TIGER/Line® dataset from the US Census Bureau"
+"Fort Carson MEDDAC 1650 Cochrane Circle Fort Carson, Fort Carson, CO, 80913",38.737494,-104.788862,0.8,place,,,"Fort Carson",CO,"El Paso County",80913,US,"TIGER/Line® dataset from the US Census Bureau"
+"3495 BAILEY AVENUE, BUFFALO, NY, 14215",42.951215,-78.813595,0.9,rooftop,3495,"Bailey Ave",Buffalo,NY,"Erie County",14226,US,"NYS GIS Program Office, State Geographic Information Officer (GIO)"
+"79 MIDDLEVILLE ROAD, NORTHPORT, NY, 11768",40.898828,-73.313903,1,rooftop,79,"Middleville Rd",Northport,NY,"Suffolk County",11768,US,"NYS GIS Program Office, State Geographic Information Officer (GIO)"
+"41 CASTLE POINT ROAD, WAPPINGERS FALLS, NY, 12590",41.539916,-73.959812,1,range_interpolation,41,"Castle Point Rd","Wappingers Falls",NY,"Dutchess County",12590,US,"TIGER/Line® dataset from the US Census Bureau"
+"800 POLY PLACE, BROOKLYN, NY, 11209",40.608591,-74.023897,1,rooftop,800,"Poly Pl",Brooklyn,NY,"Kings County",11209,US,"City of New York"
+"130 WEST KINGSBRIDGE ROAD, BRONX, NY, 10468",40.868671,-73.904997,1,rooftop,130,"W Kingsbridge Rd",Bronx,NY,"Bronx County",10468,US,"City of New York"
+"423 EAST 23RD STREET, NEW YORK, NY, 10010",40.736811,-73.977202,1,rooftop,423,"E 23rd St","New York",NY,"New York County",10010,US,"City of New York"
+"76 VETERANS AVE., BATH, NY, 14810",42.343769,-77.347305,1,rooftop,76,"Veterans Ave",Bath,NY,"Steuben County",14810,US,"NYS GIS Program Office, State Geographic Information Officer (GIO)"
+"2094 ALBANY POST ROAD, MONTROSE, NY, 10548",41.244663,-73.926263,1,rooftop,2094,"Albany Post Rd",Montrose,NY,"Westchester County",10548,US,"NYS GIS Program Office, State Geographic Information Officer (GIO)"
+"800 IRVING AVE., SYRACUSE, NY, 13210",43.038606,-76.139007,1,rooftop,800,"Irving Ave",Syracuse,NY,"Onondaga County",13210,US,"NYS GIS Program Office, State Geographic Information Officer (GIO)"
+"900 Washington Rd, West Point, NY, 10996",41.401878,-73.977085,1,rooftop,900,"Washington Rd","West Point",NY,"Orange County",10996,US,Orange
+"100 Brewster Boulevard, Camp Lejeune, NC, 28547",34.717826,-77.34242,1,range_interpolation,100,"Brewster Blvd","Camp Lejeune",NC,"Onslow County",28547,US,"TIGER/Line® dataset from the US Census Bureau"
+"96 MDG 307 Boatner Rd Suite 114, Eglin AFB, FL, 32542",30.45907,-86.55026,0.33,place,,,"Eglin Afb",FL,"Okaloosa County",32542,US,"TIGER/Line® dataset from the US Census Bureau"
+"2817 Reilly Road, Fort Bragg, NC, 28307",35.124317,-78.994656,0.8,range_interpolation,2817,"Reilly St","Fort Bragg",NC,"Cumberland County",28310,US,"TIGER/Line® dataset from the US Census Bureau"
+"1601 BRENNER AVENUE, SALISBURY, NC, 28144",35.682691,-80.487037,1,rooftop,1601,"Brenner Ave",Salisbury,NC,"Rowan County",28144,US,Rowan
+"2300 RAMSEY STREET, FAYETTEVILLE, NC, 28301",35.088003,-78.876744,1,rooftop,2300,"Ramsey St",Fayetteville,NC,"Cumberland County",28301,US,Cumberland
+"508 FULTON STREET, DURHAM, NC, 27705",36.009501,-78.939454,1,rooftop,508,"Fulton St",Durham,NC,"Durham County",27705,US,Durham
+"1100 TUNNEL ROAD, ASHEVILLE, NC, 28805",35.587486,-82.485541,1,rooftop,1100,"Tunnel Rd",Asheville,NC,"Buncombe County",28805,US,Buncombe
+"2101 ELM STREET, FARGO, ND, 58102",46.90609,-96.775037,0.9,rooftop,2101,"Elm St N",Fargo,ND,"Cass County",58102,US,"City of Fargo"
+"10701 EAST BLVD, CLEVELAND, OH, 44106",41.512718,-81.613442,1,range_interpolation,10701,"East Blvd",Cleveland,OH,"Cuyahoga County",44106,US,"TIGER/Line® dataset from the US Census Bureau"
+"3200 VINE STREET, CINCINNATI, OH, 45220",39.138193,-84.509221,0.9,rooftop,3200,"Vine St",Cincinnati,OH,"Hamilton County",45219,US,Hamilton
+"4100 WEST THIRD STREET, DAYTON, OH, 45428",39.748943,-84.253844,0.8,nearest_rooftop_match,4118,"W 3rd St",Dayton,OH,"Montgomery County",45428,US,Montgomery
+"17273 STATE ROUTE 104, CHILLICOTHE, OH, 45601",39.385803,-83.020778,0.9,rooftop,17273,Sr-104,Chillicothe,OH,"Ross County",45601,US,Ross
+"921 NE 13TH STREET, OKLAHOMA CITY, OK, 73104",35.483235,-97.495685,1,rooftop,921,"NE 13","Oklahoma City",OK,"Oklahoma County",73104,US,"Oklahoma and Logan Counties - Association of Central Oklahoma Governments"
+"1011 HONOR HEIGHTS DRIVE, MUSKOGEE, OK, 74401",35.765267,-95.414299,1,rooftop,1011,"Honor Heights Dr",Muskogee,OK,"Muskogee County",74401,US,"City of Muskogee"
+"3710 SW US VETERANS HOSPITAL, PORTLAND, OR, 97239",45.498811,-122.685654,1,rooftop,3710,"SW Us Veterans Hospital Rd",Portland,OR,"Multnomah County",97239,US,Portland
+"913 NW GARDEN VALLEY BLVD., ROSEBURG, OR, 97471",43.229033,-123.367878,0.9,range_interpolation,913,"NW Garden Valley Blvd",Roseburg,OR,"Douglas County",97471,US,"TIGER/Line® dataset from the US Census Bureau"
+"135 EAST 38TH STREET, ERIE, PA, 16504",42.102124,-80.063043,1,rooftop,135,"E 38th St",Erie,PA,"Erie County",16504,US,Erie
+"1400 BLACK HORSE HILL ROAD, COATESVILLE, PA, 19320",39.998094,-75.796315,1,rooftop,1400,"Blackhorse Hill Rd",Coatesville,PA,"Chester County",19320,US,Chester
+"1700 SOUTH LINCOLN AVENUE, LEBANON, PA, 17042",40.317212,-76.398406,1,rooftop,1700,"S Lincoln Ave",Lebanon,PA,"Lebanon County",17042,US,Dauphin
+"2907 PLEASANT VALLEY BOULEVARD, ALTOONA, PA, 16602",40.489084,-78.395943,1,rooftop,2907,"Pleasant Valley Blvd",Altoona,PA,"Blair County",16602,US,Blair
+"1111 EAST END BOULEVARD, WILKES-BARRE, PA, 18711",41.249173,-75.833691,0.9,range_interpolation,1111,"E End Blvd",Wilkes-Barre,PA,"Luzerne County",18702,US,"TIGER/Line® dataset from the US Census Bureau"
+"3900 WOODLAND AVENUE, PHILADELPHIA, PA, 19104",39.946801,-75.203051,1,rooftop,3900,"Woodland Ave",Philadelphia,PA,"Philadelphia County",19104,US,Philadelphia
+"10 CALLE CASIA, SAN JUAN, PR, 921",18.433572,-66.039112,0.8,range_interpolation,10,"Calle E","San Juan",PR,"San Juan Municipio",00915,US,"TIGER/Line® dataset from the US Census Bureau"
+"830 CHALKSTONE AVENUE, PROVIDENCE, RI, 2908",41.832243,-71.432222,1,rooftop,830,"Chalkstone Ave",Providence,RI,"Providence County",02908,US,Providence
+"6439 GARNERS FERRY ROAD, COLUMBIA, SC, 29209",33.979947,-80.961988,1,range_interpolation,6439,"Garners Ferry Rd",Columbia,SC,"Richland County",29209,US,"TIGER/Line® dataset from the US Census Bureau"
+"109 BEE STREET, CHARLESTON, SC, 29401",32.784468,-79.954142,1,rooftop,109,"Bee St",Charleston,SC,"Charleston County",29401,US,"City of Charleston"
+"5500 E. KELLOG, WICHITA, KS, 67218",37.679905,-97.276564,0.9,range_interpolation,5500,"E Kellogg Dr N",Wichita,KS,"Sedgwick County",67218,US,"TIGER/Line® dataset from the US Census Bureau"
+"113 COMANCHE ROAD, FORT MEADE, SD, 57741",44.412131,-103.467664,1,range_interpolation,113,"Comanche Rd","Fort Meade",SD,"Meade County",57741,US,"TIGER/Line® dataset from the US Census Bureau"
+"500 NORTH 5TH STREET, HOT SPRINGS, SD, 57747",43.428269,-103.469694,1,rooftop,500,"N 5th St","Hot Springs",SD,"Fall River County",57747,US,Statewide
+"1030 JEFFERSON AVENUE, MEMPHIS, TN, 38104",35.143076,-90.026704,1,rooftop,1030,"Jefferson Ave",Memphis,TN,"Shelby County",38104,US,"City of Memphis"
+"3400 LEBANON PIKE, MURFREESBORO, TN, 37129",35.914479,-86.380333,0.9,rooftop,3400,"Lebanon Pike",Murfreesboro,TN,"Rutherford County",37130,US,"City of Murfreesboro"
+"CORNER OF LAMONT STREET AND VETERANS WAY, MOUNTAIN HOME, TN, 37684",36.271729,-82.501212,1,place,,,"Mountain Home",TN,"Washington County",37684,US,"TIGER/Line® dataset from the US Census Bureau"
+"1310 24TH AVENUE SOUTH, NASHVILLE, TN, 37212",36.141014,-86.804,1,rooftop,1310,"24th Ave S",Nashville,TN,"Davidson County",37212,US,"City of Nashville"
+"4500 S. LANCASTER ROAD, DALLAS, TX, 75216",32.695124,-96.790065,1,rooftop,4500,"S Lancaster Rd",Dallas,TX,"Dallas County",75216,US,Dallas
+"6010 AMARILLO BLVD. WEST, AMARILLO, TX, 79106",35.204013,-101.906486,0.9,rooftop,6010,"W Amarillo Blvd",Amarillo,TX,"Potter County",79106,US,"City of Amarillo"
+"1201 BROAD ROCK BOULEVARD, RICHMOND, VA, 23249",37.497756,-77.468778,0.9,rooftop,1201,"Broad Rock Blvd",Richmond,VA,"Richmond city",23224,US,"City of Richmond"
+"100 EMANCIPATION DRIVE, HAMPTON, VA, 23667",37.014855,-76.333001,1,rooftop,100,"Emancipation Dr",Hampton,VA,"Hampton city",23667,US,"Virginia Geographic Information Network (VGIN)"
+"620 John Paul Jones Circle, Portsmouth, VA, 23708",36.849529,-76.305158,0.33,place,,,Portsmouth,VA,"Portsmouth city",23708,US,"TIGER/Line® dataset from the US Census Bureau"
+"9040 Jackson Avenue, Tacoma, WA, 98431",47.066193,-122.113223,0.33,place,,,Tacoma,WA,"Pierce County",98431,US,"TIGER/Line® dataset from the US Census Bureau"
+"VA MEDICAL CENTER, PERRY POINT, MD, 21902",39.552962,-76.072471,1,place,,,"Perry Point",MD,"Cecil County",21902,US,"TIGER/Line® dataset from the US Census Bureau"
+"1 Boone Road Bremerton, Bremerton, WA, 98312",47.593619,-122.692965,1,range_interpolation,1,"Boone Rd",Bremerton,WA,"Kitsap County",98312,US,"TIGER/Line® dataset from the US Census Bureau"
+"4815 N. ASSEMBLY STREET, SPOKANE, WA, 99205",47.702933,-117.47623,1,rooftop,4815,"N Assembly St",Spokane,WA,"Spokane County",99205,US,"City of Spokane"
+"150 S. HUNTINGTON AVENUE, JAMAICA PLAIN, MA, 2130",42.326778,-71.110167,1,rooftop,150,"S Huntington Ave","Jamaica Plain",MA,"Suffolk County",02130,US,"City of Boston"
+"3475 North Saratoga Street, Oak Harbor, WA, 98277",48.330953,-122.680331,0.9,range_interpolation,3475,"N Saratoga St","Oak Harbor",WA,"Island County",98278,US,"TIGER/Line® dataset from the US Census Bureau"
+"1660 S. COLUMBIAN WAY, SEATTLE, WA, 98108",47.562432,-122.308386,1,rooftop,1660,"S Columbian Way",Seattle,WA,"King County",98108,US,King
+"1500 WEISS STREET, SAGINAW, MI, 48602",43.443531,-83.960855,1,range_interpolation,1500,"Weiss St",Saginaw,MI,"Saginaw County",48602,US,"TIGER/Line® dataset from the US Census Bureau"
+"200 VETERANS AVENUE, BECKLEY, WV, 25801",37.76495,-81.193359,1,rooftop,200,"Veterans Ave",Beckley,WV,"Raleigh County",25801,US,Raleigh
+"510 BUTLER AVE., MARTINSBURG, WV, 25405",39.417547,-77.911283,1,rooftop,510,"Butler Ave",Martinsburg,WV,"Berkeley County",25405,US,Statewide
+"1540 SPRING VALLEY ROAD, HUNTINGTON, WV, 25704",38.38395,-82.517754,1,range_interpolation,1540,"Co Hwy 7",Huntington,WV,"Wayne County",25704,US,"TIGER/Line® dataset from the US Census Bureau"
+"5000 W. NATIONAL AVENUE, MILWAUKEE, WI, 53295",43.021835,-87.976775,1,rooftop,5000,"W National Ave",Milwaukee,WI,"Milwaukee County",53295,US,"City of Milwaukee"
+"2500 OVERLOOK TERRACE, MADISON, WI, 53705",43.074325,-89.430706,1,rooftop,2500,"Overlook Ter",Madison,WI,"Dane County",53705,US,Dane
+"ONE VETERANS DRIVE, MINNEAPOLIS, MN, 55417",44.90444,-93.230407,1,place,,,Minneapolis,MN,"Hennepin County",55417,US,"TIGER/Line® dataset from the US Census Bureau"
+"500 EAST VETERANS STREET, TOMAH, WI, 54660",44.001188,-90.49392,1,rooftop,500,"E Veterans St",Tomah,WI,"Monroe County",54660,US,Statewide
+"1898 FORT ROAD, SHERIDAN, WY, 82801",44.827079,-106.98497,1,range_interpolation,1898,"Fort Rd",Sheridan,WY,"Sheridan County",82801,US,"TIGER/Line® dataset from the US Census Bureau"
+"2360 E. PERSHING BLVD., CHEYENNE, WY, 82001",41.148004,-104.786698,1,rooftop,2360,"E Pershing Blvd",Cheyenne,WY,"Laramie County",82001,US,Laramie
+"81 MDG 301 Fisher St. Suite 109, Biloxi, MS, 39530",30.409826,-88.880304,0.33,place,,,Biloxi,MS,"Harrison County",39530,US,"TIGER/Line® dataset from the US Census Bureau"
+"99 MDG 4700 Las Vegas Blvd, Nellis AFB, NV, 89191",36.239491,-115.025738,0.33,place,,,"Nellis Afb",NV,"Clark County",89191,US,"TIGER/Line® dataset from the US Census Bureau"
+"88 MDG 4881 Sugar Maple Dr., Wright-Patterson AFB, OH, 45433",39.815235,-84.052634,0.2,place,,,Dayton,OH,"Montgomery County",45433,US,"TIGER/Line® dataset from the US Census Bureau"
+"UNIVERSITY DRIVE, PITTSBURGH, PA, 15240",40.454063,-80.061186,0.9,street_center,,"University Dr",Pittsburgh,PA,"Allegheny County",15204,US,"TIGER/Line® dataset from the US Census Bureau"
+"1 Pinckney Blvd, Beaufort, SC, 29902",32.340752,-80.838554,0.6,rooftop,1,"Pinckney Point Rd",Beaufort,SC,"Beaufort County",29902,US,Beaufort
+"2501 WEST 22ND STREET, SIOUX FALLS, SD, 57117",43.531239,-96.757621,0.9,rooftop,2501,"W 22nd St","Sioux Falls",SD,"Minnehaha County",57105,US,"City of Sioux Falls"
+"633 MDG 77 Nealy Ave, Langley, VA, 23665",37.083118,-76.360036,0.22,place,,,Hampton,VA,"Hampton city",23665,US,"TIGER/Line® dataset from the US Census Bureau"
+"1 MEDICAL CENTER DRIVE, CLARKSBURG, WV, 26301",39.270417,-80.361905,1,rooftop,1,"Medical Center Dr",Clarksburg,WV,"Harrison County",26301,US,Harrison
+"3701 LOOP ROAD EAST, TUSCALOOSA, AL, 35404",33.191336,-87.48594,1,rooftop,3701,"Loop Rd",Tuscaloosa,AL,"Tuscaloosa County",35404,US,Tuscaloosa
+"4076 Neely Road, Fort Wainwright, AK, 99703",64.827687,-147.682849,0.6,street_center,,"Neely Rd","Fort Wainwright",AK,"Fairbanks North Star Borough",99703,US,"TIGER/Line® dataset from the US Census Bureau"
+"700 SOUTH 19TH STREET, BIRMINGHAM, AL, 35233",33.512036,-86.894465,0.9,rooftop,700,"19th St",Birmingham,AL,"Jefferson County",35218,US,Jefferson
+"215 PERRY HILL ROAD, MONTGOMERY, AL, 36109",32.377303,-86.244401,1,rooftop,215,"Perry Hill Rd",Montgomery,AL,"Montgomery County",36109,US,"City of Montgomery"
+"650 E. INDIAN SCHOOL ROAD, PHOENIX, AZ, 85012",33.496961,-112.066778,1,rooftop,650,"E Indian School Rd",Phoenix,AZ,"Maricopa County",85012,US,Maricopa
+"500 HIGHWAY 89 NORTH, PRESCOTT, AZ, 86313",34.55133,-112.453297,0.9,rooftop,500,"N State Route 89",Prescott,AZ,"Yavapai County",86301,US,Yavapai
+"3601 SOUTH SIXTH AVENUE, TUCSON, AZ, 85723",32.09483,-110.831847,0.5,street_center,,"Sixth St",Summit,AZ,"Pima County",85756,US,"TIGER/Line® dataset from the US Census Bureau"
+"1100 N. COLLEGE AVENUE, FAYETTEVILLE, AR, 72703",36.079867,-94.158293,1,rooftop,1100,"N College Ave",Fayetteville,AR,"Washington County",72703,US,"City of Fayetteville"
+"4300 WEST SEVENTH STREET, LITTLE ROCK, AR, 72205",34.746372,-92.3205,1,rooftop,4300,"W 7th St","Little Rock",AR,"Pulaski County",72205,US,"Arkansas Geographic Information Office"
+"103 Bodin Circle Fairfield, Fairfield, CA, 94533",38.26763,-121.958558,0.9,range_interpolation,103,"Bodin Cir","Travis Afb",CA,"Solano County",94535,US,"TIGER/Line® dataset from the US Census Bureau"
+"200 Mercy Circle Camp Pendleton, Camp Pendleton, CA, 92055",33.221429,-117.38874,1,rooftop,200,"Mercy Cir","Camp Pendleton",CA,"San Diego County",92055,US,"San Diego Geographic Information Source - JPA"
+"10535 HOSPITAL WAY, MATHER, CA, 95655",38.571666,-121.297447,1,range_interpolation,10535,"Hospital Way",Mather,CA,"Sacramento County",95655,US,"TIGER/Line® dataset from the US Census Bureau"
+"2615 E. CLINTON AVENUE, FRESNO, CA, 93703",36.77255,-119.779263,1,rooftop,2615,"E Clinton Ave",Fresno,CA,"Fresno County",93703,US,"Fresno County"
+"34800 Bob Wilson Drive, San Diego, CA, 92134",32.727948,-117.145747,1,rooftop,34800,"Bob Wilson Dr","San Diego",CA,"San Diego County",92134,US,"San Diego Geographic Information Source - JPA"
+"5901 E. SEVENTH STREET, LONG BEACH, CA, 90822",33.778458,-118.118733,1,rooftop,5901,"E 7th St","Long Beach",CA,"Los Angeles County",90822,US,"Los Angeles County"
+"3801 MIRANDA AVENUE, PALO ALTO, CA, 94304",37.405452,-122.139946,1,rooftop,3801,"Miranda Ave","Palo Alto",CA,"Santa Clara County",94304,US,"City of Palo Alto"
+"166 4th Street, Fort Irwin, CA, 92310",35.270208,-116.693336,0.6,street_center,,"4th St","Fort Irwin",CA,"San Bernardino County",92310,US,"TIGER/Line® dataset from the US Census Bureau"
+"1145 Sturgis Road, Twentynine Palms, CA, 92278",34.225523,-116.048624,1,range_interpolation,1145,"Sturgis Rd","Twentynine Palms",CA,"San Bernardino County",92278,US,"TIGER/Line® dataset from the US Census Bureau"
+"11301 WILSHIRE BLVD., LOS ANGELES, CA, 90073",34.054729,-118.453956,0.6,street_center,,"Wilshire Blvd","Los Angeles",CA,"Los Angeles County",90073,US,"TIGER/Line® dataset from the US Census Bureau"
+"11201 BENTON STREET, LOMA LINDA, CA, 92357",34.051226,-117.252393,1,range_interpolation,11201,"Benton St","Loma Linda",CA,"San Bernardino County",92357,US,"TIGER/Line® dataset from the US Census Bureau"
+"4150 CLEMENT STREET, SAN FRANCISCO, CA, 94121",37.781538,-122.504847,1,rooftop,4150,"Clement St","San Francisco",CA,"San Francisco County",94121,US,"San Francisco"
+"2121 N. AVENUE, GRAND JUNCTION, CO, 81501",39.210774,-108.665957,0.3,nearest_rooftop_match,2076,"N Rd","Grand Junction",CO,"Mesa County",81505,US,"Mesa County"
+"1700 NORTH WHEELING STREET, AURORA, CO, 80045",39.741266,-104.83041,1,rooftop,1700,"N Wheeling St",Aurora,CO,"Adams County",80045,US,"City of Aurora"
+"950 CAMPBELL AVENUE, WEST HAVEN, CT, 6516",41.283673,-72.960452,1,rooftop,950,"Campbell Ave","West Haven",CT,"New Haven County",06516,US,"Connecticut Geospatial Information Systems Council"
+"50 IRVING STREET N.W., WASHINGTON, DC, 20422",38.929401,-77.011194,1,rooftop,50,"Irving St NW",Washington,DC,"District of Columbia",20422,US,"City of Washington"
+"1601 KIRKWOOD HIGHWAY, WILMINGTON, DE, 19805",39.739677,-75.607179,1,rooftop,1601,"Kirkwood Hwy",Wilmington,DE,"New Castle County",19805,US,"New Castle"
+"10000 BAY PINES BLVD., BAY PINES, FL, 33744",27.80875,-82.775428,1,rooftop,10000,"Bay Pines Blvd","Bay Pines",FL,"Pinellas County",33744,US,Pinellas
+"2080 Child Street, Jacksonville, FL, 32212",30.223919,-81.693155,1,range_interpolation,2080,"Child St",Jacksonville,FL,"Duval County",32212,US,"TIGER/Line® dataset from the US Census Bureau"
+"619 SOUTH MARION AVENUE, LAKE CITY, FL, 32025",30.183669,-82.636883,0.9,range_interpolation,619,"State Hwy 25a","Lake City",FL,"Columbia County",32025,US,"TIGER/Line® dataset from the US Census Bureau"
+"13000 BRUCE B DOWNS BLVD., TAMPA, FL, 33612",28.064564,-82.427682,1,rooftop,13000,"Bruce B Downs Blvd",Tampa,FL,"Hillsborough County",33612,US,"Hillsborough County"
+"7305 N. MILITARY TRAIL, WEST PALM BEACH, FL, 33410",26.786075,-80.111766,1,rooftop,7305,"N Military Trl","West Palm Beach",FL,"Palm Beach County",33410,US,"Palm Beach County"
+"1601 S W ARCHER ROAD, GAINESVILLE, FL, 32608",29.636837,-82.344128,0.9,rooftop,1601,"Archer Rd",Gainesville,FL,"Alachua County",32601,US,Loveland
+"1201 N W 16TH STREET, MIAMI, FL, 33125",25.791969,-80.217122,0.9,rooftop,1201,"NW 16th St",Miami,FL,"Miami-Dade County",33125,US,Miami
+"13800 VETERANS WAY, ORLANDO, FL, 32827",28.366191,-81.276053,1,rooftop,13800,"Veterans Way",Orlando,FL,"Orange County",32827,US,"Orange County"
+"7950 Martin Loop, Fort Benning, GA, 31905",32.392337,-84.931457,0.33,place,,,"Fort Benning",GA,"Muscogee County",31905,US,"TIGER/Line® dataset from the US Census Bureau"
+"1826 VETERANS BOULEVARD, DUBLIN, GA, 31021",32.536184,-82.943795,1,rooftop,1826,"Veterans Blvd",Dublin,GA,"Laurens County",31021,US,Laurens
+"1061 Harmon Avenue, Fort Stewart, GA, 31314",31.869442,-81.601193,0.9,range_interpolation,1061,"Harmon Ave","Fort Stewart",GA,"Liberty County",31314,US,"TIGER/Line® dataset from the US Census Bureau"
+"1670 CLAIRMONT ROAD, DECATUR, GA, 30033",33.801656,-84.311684,1,rooftop,1670,"Clairmont Rd",Decatur,GA,"DeKalb County",30033,US,Dekalb
+"1 FREEDOM WAY, AUGUSTA, GA, 30904",33.464666,-82.026486,1,rooftop,1,"Freedom Way",Augusta,GA,"Richmond County",30904,US,Richmond
+"300 East Hospital Road, Fort Gordon, GA, 30905",33.425256,-82.127273,1,range_interpolation,300,"E Hospital Rd",Augusta,GA,"Richmond County",30905,US,"TIGER/Line® dataset from the US Census Bureau"
+"1 Jarrett White Rd, Honolulu, HI, 96859",21.360112,-157.890007,1,rooftop,1,"Jarrett White Rd","Tripler Army Medical Ctr",HI,"Honolulu County",96859,US,"City of Honolulu"
+"500 W. FORT STREET, BOISE, ID, 83702",43.620556,-116.189703,1,rooftop,500,"W Fort St",Boise,ID,"Ada County",83702,US,"City of Boise"
+"820 S DAMEN STREET, CHICAGO, IL, 60612",41.870777,-87.677169,1,rooftop,820,"S Damen Ave",Chicago,IL,"Cook County",60612,US,Cook
+"1900 E. MAIN, DANVILLE, IL, 61832",40.131669,-87.592389,1,range_interpolation,1900,"Us Hwy 136",Danville,IL,"Vermilion County",61832,US,"TIGER/Line® dataset from the US Census Bureau"
+"2401 WEST MAIN, MARION, IL, 62959",37.730219,-88.953098,1,range_interpolation,2401,"W Main St",Marion,IL,"Williamson County",62959,US,"TIGER/Line® dataset from the US Census Bureau"
+"5000 SOUTH 5TH AVENUE, HINES, IL, 60141",41.853141,-87.838806,1,rooftop,5000,"S 5th Ave",Hines,IL,"Cook County",60141,US,Cook
+"3001 GREENBAY ROAD, NORTH CHICAGO, IL, 60064",42.306793,-87.860535,1,rooftop,3001,"Green Bay Rd","North Chicago",IL,"Lake County",60064,US,Lake
+"2121 LAKE AVENUE, FORT WAYNE, IN, 46805",41.089904,-85.10793,1,rooftop,2121,"Lake Ave","Fort Wayne",IN,"Allen County",46805,US,Allen
+"1481 W. TENTH STREET, INDIANAPOLIS, IN, 46202",39.777315,-86.187768,1,rooftop,1481,"W 10th St",Indianapolis,IN,"Marion County",46202,US,Statewide
+"1700 E. 38TH STREET, MARION, IN, 46953",40.523606,-85.637287,1,range_interpolation,1700,"E 38th St",Marion,IN,"Grant County",46953,US,"TIGER/Line® dataset from the US Census Bureau"
+"601 HIGHWAY 6 WEST, IOWA CITY, IA, 52246",41.663621,-91.548626,1,rooftop,601,"Highway 6 W","Iowa City",IA,"Johnson County",52246,US,Johnson
+"3600 30TH STREET, DES MOINES, IA, 50310",41.627615,-93.65997,1,rooftop,3600,"30th St","Des Moines",IA,"Polk County",50310,US,Polk
+"600 Caisson Hill Road, Fort Riley, KS, 66442",39.113738,-96.837821,0.33,place,,,"Fort Riley",KS,"Geary County",66442,US,"TIGER/Line® dataset from the US Census Bureau"
+"2200 SW GAGE BOULEVARD, TOPEKA, KS, 66622",39.02759,-95.724955,1,range_interpolation,2200,"SW Gage Blvd",Topeka,KS,"Shawnee County",66622,US,"TIGER/Line® dataset from the US Census Bureau"
+"4101 S. 4TH STREET, LEAVENWORTH, KS, 66048",39.277777,-94.89844,1,rooftop,4101,"S 4th St",Leavenworth,KS,"Leavenworth County",66048,US,Statewide
+"650 Joel Drive, Fort Campbell, KY, 42223",36.637435,-87.447583,1,range_interpolation,650,"Joel Dr","Fort Campbell",KY,,42223,US,"TIGER/Line® dataset from the US Census Bureau"
+"800 ZORN AVENUE, LOUISVILLE, KY, 40206",38.270629,-85.697319,1,rooftop,800,"Zorn Ave",Louisville,KY,"Jefferson County",40206,US,"Metro Louisville,  LOJIC partners"
+"1101 VETERANS DRIVE, LEXINGTON, KY, 40502",38.029296,-84.50668,1,rooftop,1101,"Veterans Dr",Lexington,KY,"Fayette County",40502,US,"Lexington Fayette"
+"2400 CANAL STREET, NEW ORLEANS, LA, 70119",29.963081,-90.084705,1,rooftop,2400,"Canal St","New Orleans",LA,"Orleans Parish",70119,US,"Orleans Parish"
+"1585 3rd Street Fort Polk, Fort Polk, LA, 71459",31.063867,-93.211461,1,range_interpolation,1585,"3rd St",Leesville,LA,"Vernon Parish",71459,US,"TIGER/Line® dataset from the US Census Bureau"
+"2495 SHREVEPORT HIGHWAY 71 N, PINEVILLE, LA, 71360",31.354976,-92.437746,1,rooftop,2495,"Shreveport Hwy",Pineville,LA,"Rapides Parish",71360,US,Rapides
+"510 EAST STONER AVENUE, SHREVEPORT, LA, 71101",32.500138,-93.722968,1,range_interpolation,510,"E Stoner Ave",Shreveport,LA,"Caddo Parish",71101,US,"TIGER/Line® dataset from the US Census Bureau"
+"1 VA CENTER, AUGUSTA, ME, 4330",44.280517,-69.704758,1,rooftop,1,"Va Ctr",Augusta,ME,"Kennebec County",04330,US,"Maine Office of GIS"
+"10 NORTH GREENE STREET, BALTIMORE, MD, 21201",39.28971,-76.624468,1,rooftop,10,"N Greene St",Baltimore,MD,"Baltimore city",21201,US,"City of Baltimore"
+"421 N MAIN ST, LEEDS, MA, 1053",42.349727,-72.68262,1,rooftop,421,"N Main St",Leeds,MA,"Hampshire County",01053,US,"Office of Geographic Information (MassGIS), Commonwealth of Massachusetts, MassIT"
+"8901 Rockville Pike, Bethesda, MD, 20889",38.998221,-77.101431,0.5,nearest_rooftop_match,9000,"Rockville Pik",Bethesda,MD,"Montgomery County",20814,US,Montgomery
+"200 SPRINGS ROAD, BEDFORD, MA, 1730",42.504655,-71.273482,1,rooftop,200,"Springs Rd",Bedford,MA,"Middlesex County",01730,US,"Office of Geographic Information (MassGIS), Commonwealth of Massachusetts, MassIT"
+"325 EAST H STREET, IRON MOUNTAIN, MI, 49801",45.811586,-88.0638,1,range_interpolation,325,"E H St","Iron Mountain",MI,"Dickinson County",49801,US,"TIGER/Line® dataset from the US Census Bureau"
+"5500 ARMSTRONG RD., BATTLE CREEK, MI, 49037",42.343459,-85.291367,1,rooftop,5500,"Armstrong Rd","Battle Creek",MI,"Calhoun County",49037,US,Allegan
+"4646 JOHN R., DETROIT, MI, 48201",42.355717,-83.059014,1,rooftop,4646,"John R",Detroit,MI,"Wayne County",48201,US,Semcog
+"2215 FULLER ROAD, ANN ARBOR, MI, 48105",42.28524,-83.713913,1,rooftop,2215,"Fuller Rd","Ann Arbor",MI,"Washtenaw County",48105,US,Semcog
+"4801 VETERANS DRIVE, ST. CLOUD, MN, 56303",45.567144,-94.21389,0.4,rooftop,4801,"8th St N","Saint Cloud",MN,"Stearns County",56303,US,Stearns
+"3551 Roger Brooke Drive, Fort Sam Houston, TX, 78234",29.818679,-95.385963,0.8,range_interpolation,3551,"Rogers St",Houston,TX,"Harris County",77022,US,"TIGER/Line® dataset from the US Census Bureau"
+"36000 Darnall Loop, Fort Hood, TX, 76544",31.133758,-97.773479,0.6,street_center,,"Darnell Loop",Killeen,TX,"Bell County",76544,US,"TIGER/Line® dataset from the US Census Bureau"
+"2002 HOLCOMBE BLVD., HOUSTON, TX, 77030",29.705791,-95.390121,1,range_interpolation,2002,"Holcombe Blvd",Houston,TX,"Harris County",77030,US,"TIGER/Line® dataset from the US Census Bureau"
+"5005 N. Piedras St., El Paso, TX, 79920",31.8216,-106.460073,1,rooftop,5005,"N Piedras","El Paso",TX,"El Paso County",79920,US,"El Paso"
+"1901 VETERANS MEMORIAL DRIVE, TEMPLE, TX, 76504",31.079833,-97.348596,1,range_interpolation,1901,"Veterans Memorial Dr",Temple,TX,"Bell County",76504,US,"TIGER/Line® dataset from the US Census Bureau"
+"7400 MERTON MINTER BLVD., SAN ANTONIO, TX, 78229",29.506013,-98.580914,1,rooftop,7400,"Merton Minter","San Antonio",TX,"Bexar County",78229,US,"San Antonio"
+"500 FOOTHILL BLVD., SALT LAKE CITY, UT, 84148",40.758354,-111.840809,0.9,range_interpolation,500,"Foothill Dr","Salt Lake City",UT,"Salt Lake County",84113,US,"TIGER/Line® dataset from the US Census Bureau"
+"163 VETERANS DRIVE, WHITE RIVER JUNCTION, VT, 5009",43.648061,-72.34222,0.9,rooftop,163,"Veterans Dr","White River Junction",VT,"Windsor County",05001,US,"VT Enhanced 911 Board, VCGI"
+"9300 DeWitt Loop, Fort Belvoir, VA, 22060",38.714562,-77.167886,0.33,place,,,"Fort Belvoir",VA,"Fairfax County",22060,US,"TIGER/Line® dataset from the US Census Bureau"
+"1970 ROANOKE BOULEVARD, SALEM, VA, 24153",37.274527,-80.019889,1,rooftop,1970,"Roanoke Blvd",Salem,VA,"Roanoke County",24153,US,"City of Salem"
