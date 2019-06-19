@@ -10,9 +10,6 @@ import dash_table
 import numpy as np
 import pandas as pd
 
-import plotly.plotly as py
-import plotly.graph_objs as go
-
 import os
 
 #Load data and define functions for analysis:
@@ -108,138 +105,17 @@ def compute_final_score(reduced_hosps,specialty, dept_size_wt, dist_wt, var_wt_1
   reduced_hosps = reduced_hosps.sort_values('Final Score',ascending=False)
   return reduced_hosps
 
-def get_final_table(reduced_hosps,specialty):
-  #Utility function to compute the final table to be displayed:
-  if specialty == 'OB/GYN':
-    sel_cols = ['Hospital name','Num_OB/GYN','Blood clots post surgery Score','Post surgery Sepsis Score','Abdomen Open Wound Score','Accidental Lacerations Score']
-    df1 = master_df.loc[reduced_hosps.index[:5],sel_cols]
-    df1.rename(columns={'Num_OB/GYN':'Number of Specialists',
-                        'Blood clots post surgery Score':'Rate of blood clot complications',
-                        'Post surgery Sepsis Score':'Rate of Sepsis post surgery',
-                        'Abdomen Open Wound Score':'Rate of wound opening in abdomen post surgery',
-                        'Accidental Lacerations Score':'Rate of accidental lacerations during surgery'}, inplace=True)
-    df2 = reduced_hosps[['Hospital name','Distance','Final Score']]
-    df2 = df2.iloc[:5,:]
-    final_table = df1.merge(df2,left_on='Hospital name',right_on='Hospital name')
-    final_cols = ['Hospital name','Distance','Number of Specialists','Rate of blood clot complications','Rate of Sepsis post surgery','Rate of wound opening in abdomen post surgery','Rate of accidental lacerations during surgery','Final Score']
-    final_table = final_table[final_cols]
-  elif specialty == 'Orthopedic Surgery':
-    sel_cols = ['Hospital name','Num_Ortho','Hip and Knee Replacement Score','Postop Dialysis need Score','Blood clots post surgery Score','Post surgery Sepsis Score']
-    df1 = master_df.loc[reduced_hosps.index[:5],sel_cols]
-    df1.rename(columns={'Num_Ortho':'Number of Specialists',
-                        'Blood clots post surgery Score':'Rate of blood clot complications',
-                        'Post surgery Sepsis Score':'Rate of Sepsis post surgery',
-                        'Hip and Knee Replacement Score':'Rate of complications for hip/knee replacements',
-                        'Postop Dialysis need Score':'Rate of kidney injury requiring Dialysis post surgery'}, inplace=True)
-    df2 = reduced_hosps[['Hospital name','Distance','Final Score']]
-    df2 = df2.iloc[:5,:]
-    final_table = df1.merge(df2,left_on='Hospital name',right_on='Hospital name')
-    final_cols = ['Hospital name','Distance','Number of Specialists','Rate of complications for hip/knee replacements','Rate of kidney injury requiring Dialysis post surgery','Rate of blood clot complications','Rate of Sepsis post surgery','Final Score']
-    final_table = final_table[final_cols]
-  else:
-    sel_cols = ['Hospital name','Num_Pediatric','Pneumonia death Score','Num_Assist']
-    df1 = master_df.loc[reduced_hosps.index[:5],sel_cols]
-    df1.rename(columns={'Num_Pediatric':'Number of Specialists',
-                        'Pneumonia death Score':'Mortality rate for Pneumonia',
-                        'Num_Assist':'Number of Assistants on-site'}, inplace=True)
-    df2 = reduced_hosps[['Hospital name','Distance','Final Score']]
-    df2 = df2.iloc[:5,:]
-    final_table = df1.merge(df2,left_on='Hospital name',right_on='Hospital name')
-    final_cols = ['Hospital name','Distance','Number of Specialists','Mortality rate for Pneumonia','Number of Assistants on-site','Final Score']
-    final_table = final_table[final_cols]
-
-  final_table['Final Score'] = round(final_table['Final Score']*100)
-  final_table['Distance'] = round(final_table['Distance'],2)
-  return final_table
-
-def display_map_and_hosps(reduced_hosps,zipc):
-  
-  if zipc is not None:
-    temp = zip_df.loc[zip_df['Zip']==int(zipc)]
-    if np.shape(temp)[0] != 0:
-      lat1 = temp['Latitude'].iloc[0]
-      long1 = temp['Longitude'].iloc[0]
-      return {
-          "data": [
-                  {
-                      "type": "scattermapbox",
-                      "lat": reduced_hosps['Latitude'],
-                      "lon": reduced_hosps['Longitude'],
-                      "text": reduced_hosps['Hospital name'],
-                      "mode": "markers",
-                      "marker": {
-                          "size": 10,
-                          "opacity": 1.0
-                      }
-                  }
-                  ],
-          "layout": {
-              "autosize": True,
-              "hovermode": "closest",
-              "mapbox": {
-                  "accesstoken": os.environ.get("MAPBOX_KEY"),
-                  "bearing": 0,
-                  "center": {
-                      "lat": lat1,
-                      "lon": long1
-                  },
-                  "pitch": 0,
-                  "zoom": 10,
-                  "style": "outdoors"
-              }
-          }
-      }
-  else:
-      return {
-          "data": [
-                  {
-                      "type": "scattermapbox",
-                      "lat": master_df['Latitude'],
-                      "lon": master_df['Longitude'],
-                      "text": master_df['Hospital name'],
-                      "mode": "markers",
-                      "marker": {
-                          "size": 3,
-                          "opacity": 1.0
-                      }
-                  }
-                  ],
-          "layout": {
-              "autosize": True,
-              "hovermode": "closest",
-              "mapbox": {
-                  "accesstoken": os.environ.get("MAPBOX_KEY"),
-                  "bearing": 0,
-                  "center": {
-                      "lat": 40,
-                      "lon": -98.5
-                  },
-                  "pitch": 0,
-                  "zoom": 2,
-                  "style": "outdoors"
-              }
-          }
-      }
-
-
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 server = app.server
 server.secret_key = os.environ.get("SECRET_KEY", "secret")
 
 app.layout = html.Div(children=[
-  html.Div([
-    html.Div([
-    html.H1(
+  html.H1(
     children='HospFinder',
     style={'text-align':'center'}
-    )],className="col-md-12")
-    ],className='row')
-  ,
-
-  #Start of 2nd row:
+    ),
   html.Div([
-    html.Div([
     html.P([
         html.Label('Enter the specialty you are looking for:'),
         # dcc.Input(id='mother_birth', value=1952, type='number'),
@@ -260,19 +136,7 @@ app.layout = html.Div(children=[
             options=[{'label': i, 'value': i} for i in [str(5), str(10), str(20), str(50)]],
             value=str(5),
             labelStyle={'display': 'inline-block'}
-        )])],className="col-md-2"),
-    html.Div([
-      html.Button(id='submit-button', children='Submit')],className="col-md-2"),
-    html.Div([
-      html.Div(children=[
-        html.Div(id='output-check'),
-        html.H2(id='hosp-output')])
-      ],className='col-md-8')
-    ],className="row")
-  ,
-  #Start next row with sliders and radar chart:
-  html.Div([
-    html.Div([
+        )]),
     html.Div('Please specify how important the following are to you (higher number is better outcomes):'),
     html.P([
       html.Label('Distance'),
@@ -328,18 +192,14 @@ app.layout = html.Div(children=[
         value=5,
         marks={str(i):str(i) for i in range(11)},
         step=1)],style={'padding':10})
-    ],className="col-md-4"),
-    html.Div([
-      dcc.Graph(id='map-output')],className="col-md-8")
-    ],className="row"),
-  html.Hr(),
-  #Final row with table for now:
-  html.Div([html.Div([
-    html.Div(id='table-output')
-    ],className="col-md-12")
-  ],className="row")
-  
-  ],className="container-fluid")
+    ],style={'padding':10}),
+  html.Button(id='submit-button', children='Submit'),
+  html.Div(id='output-check'),
+  html.Div(children=[
+    html.H2(id='hosp-output')]),
+  html.Div(id='table-output')
+
+  ],style={'padding':10})
 
 #Update the weight labels based on Department selected
 @app.callback(
@@ -365,19 +225,6 @@ def get_weight_labels(specialty):
     wt_5 = 'N/A'
     wt_6 = 'N/A' 
   return wt_3, wt_4, wt_5, wt_6
-
-#Map callback:
-@app.callback(Output('map-output', 'figure'),
-              [Input('submit-button','n_clicks')],
-              [State('ZIP-code-state','value'),
-               State('specialty','value'),
-               State('distance-limit','value')])
-def populate_map(n_clicks,zipc,specialty,dist):
-  if zipc is not None:
-    reduced_hosps = get_relevant_hosps(zipc,dist,specialty)
-    return display_map_and_hosps(reduced_hosps,zipc)
-  else:
-    return display_map_and_hosps(master_df,zipc)
 
 @app.callback(Output('output-check', 'children'),
               [Input('submit-button', 'n_clicks')],
@@ -454,7 +301,46 @@ def display_table(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt
       #Weight all the rows for a final score:
       reduced_hosps = compute_final_score(reduced_hosps,specialty, dept_size_wt, dist_wt, var_wt_1, var_wt_2, var_wt_3, var_wt_4)
 
-      final_table = get_final_table(reduced_hosps,specialty)
+      if specialty == 'OB/GYN':
+        sel_cols = ['Hospital name','Num_OB/GYN','Blood clots post surgery Score','Post surgery Sepsis Score','Abdomen Open Wound Score','Accidental Lacerations Score']
+        df1 = master_df.loc[reduced_hosps.index[:5],sel_cols]
+        df1.rename(columns={'Num_OB/GYN':'Number of Specialists',
+                            'Blood clots post surgery Score':'Rate of blood clot complications',
+                            'Post surgery Sepsis Score':'Rate of Sepsis post surgery',
+                            'Abdomen Open Wound Score':'Rate of wound opening in abdomen post surgery',
+                            'Accidental Lacerations Score':'Rate of accidental lacerations during surgery'}, inplace=True)
+        df2 = reduced_hosps[['Hospital name','Distance','Final Score']]
+        df2 = df2.iloc[:5,:]
+        final_table = df1.merge(df2,left_on='Hospital name',right_on='Hospital name')
+        final_cols = ['Hospital name','Distance','Number of Specialists','Rate of blood clot complications','Rate of Sepsis post surgery','Rate of wound opening in abdomen post surgery','Rate of accidental lacerations during surgery','Final Score']
+        final_table = final_table[final_cols]
+      elif specialty == 'Orthopedic Surgery':
+        sel_cols = ['Hospital name','Num_Ortho','Hip and Knee Replacement Score','Postop Dialysis need Score','Blood clots post surgery Score','Post surgery Sepsis Score']
+        df1 = master_df.loc[reduced_hosps.index[:5],sel_cols]
+        df1.rename(columns={'Num_Ortho':'Number of Specialists',
+                            'Blood clots post surgery Score':'Rate of blood clot complications',
+                            'Post surgery Sepsis Score':'Rate of Sepsis post surgery',
+                            'Hip and Knee Replacement Score':'Rate of complications for hip/knee replacements',
+                            'Postop Dialysis need Score':'Rate of kidney injury requiring Dialysis post surgery'}, inplace=True)
+        df2 = reduced_hosps[['Hospital name','Distance','Final Score']]
+        df2 = df2.iloc[:5,:]
+        final_table = df1.merge(df2,left_on='Hospital name',right_on='Hospital name')
+        final_cols = ['Hospital name','Distance','Number of Specialists','Rate of complications for hip/knee replacements','Rate of kidney injury requiring Dialysis post surgery','Rate of blood clot complications','Rate of Sepsis post surgery','Final Score']
+        final_table = final_table[final_cols]
+      else:
+        sel_cols = ['Hospital name','Num_Pediatric','Pneumonia death Score','Num_Assist']
+        df1 = master_df.loc[reduced_hosps.index[:5],sel_cols]
+        df1.rename(columns={'Num_Pediatric':'Number of Specialists',
+                            'Pneumonia death Score':'Mortality rate for Pneumonia',
+                            'Num_Assist':'Number of Assistants on-site'}, inplace=True)
+        df2 = reduced_hosps[['Hospital name','Distance','Final Score']]
+        df2 = df2.iloc[:5,:]
+        final_table = df1.merge(df2,left_on='Hospital name',right_on='Hospital name')
+        final_cols = ['Hospital name','Distance','Number of Specialists','Mortality rate for Pneumonia','Number of Assistants on-site','Final Score']
+        final_table = final_table[final_cols]
+
+      final_table['Final Score'] = round(final_table['Final Score']*100)
+      final_table['Distance'] = round(final_table['Distance'],2)
       
       return dash_table.DataTable(
         columns=[{"name": i, "id": i} for i in final_table.columns],
