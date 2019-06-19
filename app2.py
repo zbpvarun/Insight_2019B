@@ -10,6 +10,8 @@ import dash_table
 import numpy as np
 import pandas as pd
 
+import os
+
 #Load data and define functions for analysis:
 master_df = pd.read_csv('./Data/Master_df.csv',dtype={'Provider ID':str})
 master_df_transformed = pd.read_csv('./Data/master_df_transformed.csv',dtype={'Provider ID':str})
@@ -103,6 +105,9 @@ def compute_final_score(reduced_hosps,specialty, dept_size_wt, dist_wt, var_wt_1
   return reduced_hosps
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+
+server = app.server
+server.secret_key = os.environ.get("SECRET_KEY", "secret")
 
 app.layout = html.Div(children=[
   html.H1(

@@ -1,0 +1,7 @@
+Data/Physician_Compare_National_Downloadable_File.csv
+
+insight
+*.pyc
+.DS_Store
+.env
+
