@@ -12,7 +12,7 @@ import pandas as pd
 
 #Load data and define functions for analysis:
 master_df = pd.read_csv('./Data/Master_df.csv',dtype={'Provider ID':str})
-master_df_week2 = pd.read_csv('./Data/master_df_week2.csv',dtype={'Provider ID':str})
+master_df_transformed = pd.read_csv('./Data/master_df_transformed.csv',dtype={'Provider ID':str})
 zip_df = pd.read_csv('./Data/Zip_Code_data_cleaned.csv')
 
 def get_distance_haversine(lat1,lat2,long1,long2):
@@ -34,6 +34,74 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 #                        'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css',
 #                        'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js']
 
+def get_relevant_hosps(zipc, dist, specialty):
+  #Utility function: Get the relevant hospital shortlist for given specialty and ZIP code.
+  temp = zip_df.loc[zip_df['Zip']==int(zipc)]
+  if np.shape(temp)[0] != 0:
+    lat1 = temp['Latitude'].iloc[0]
+    long1 = temp['Longitude'].iloc[0]
+
+    if specialty == 'OB/GYN':
+      reduced_hosps = master_df_transformed[master_df_transformed['Num_OB/GYN'] > 0].copy()
+    elif specialty == 'Orthopedic Surgery':
+      reduced_hosps = master_df_transformed[master_df_transformed['Num_Ortho'] > 0].copy()
+    else:
+      reduced_hosps = master_df_transformed[master_df_transformed['Num_Pediatric'] > 0].copy()
+    
+
+    reduced_hosps = reduced_hosps[(reduced_hosps['Latitude'].astype(float) < (lat1 + 1).astype(float))]
+    reduced_hosps = reduced_hosps[(reduced_hosps['Latitude'].astype(float) > (lat1 - 1).astype(float))]
+    reduced_hosps = reduced_hosps[(reduced_hosps['Longitude'] < (long1 + 1))]
+    reduced_hosps = reduced_hosps[(reduced_hosps['Longitude'] > (long1 - 1))].copy()
+
+    if specialty == 'OB/GYN':
+      bins = [0, 10, 50, 100, np.inf]
+      labels=[-0.5,0,0.5,1]
+      reduced_hosps['Dept_size_transformed'] = pd.cut(reduced_hosps['Num_OB/GYN'], bins=bins, labels=labels)
+    elif specialty == 'Orthopedic Surgery':
+      bins = [0, 10, 50, 100, np.inf]
+      labels=[-0.5,0,0.5,1]
+      reduced_hosps['Dept_size_transformed'] = pd.cut(reduced_hosps['Num_Ortho'], bins=bins, labels=labels)
+    else:
+      bins = [0, 10, 50, np.inf]
+      labels=[0,0.5,1]
+      reduced_hosps['Dept_size_transformed'] = pd.cut(reduced_hosps['Num_Pediatric'], bins=bins, labels=labels)
+      bins = [0, 10, 50, 100, 500, np.inf]
+      labels=[-1, -0.5, 0, 0.5, 1]
+      reduced_hosps['Num_Assist Transformed'] = pd.cut(reduced_hosps['Num_Assist'], bins=bins, labels=labels)
+
+    def get_distance(row):
+      row['Distance'] = get_distance_haversine(lat1,float(row['Latitude']),long1,float(row['Longitude']))
+      return row
+
+    reduced_hosps = reduced_hosps.apply(get_distance,1)
+    reduced_hosps = reduced_hosps[reduced_hosps['Distance'] < int(dist)]
+
+    reduced_hosps['Distance transformed'] = -1*(reduced_hosps['Distance'] - np.mean(reduced_hosps['Distance']))/np.std(reduced_hosps['Distance'])
+    return reduced_hosps
+
+def compute_final_score(reduced_hosps,specialty, dept_size_wt, dist_wt, var_wt_1, var_wt_2, var_wt_3, var_wt_4):
+  #Utility function: Compute the final score for the relevant hospitals from all other parameters.
+  if specialty == 'OB/GYN':
+    reduced_hosps['Final Score'] = dept_size_wt*reduced_hosps['Dept_size_transformed'] + dist_wt*reduced_hosps['Distance transformed'] + var_wt_1*reduced_hosps['Blood clots post surgery Score'] + var_wt_2*reduced_hosps['Post surgery Sepsis Score'] + var_wt_3*reduced_hosps['Abdomen Open Wound Score'] + var_wt_4*reduced_hosps['Accidental Lacerations Score']
+    max_score = dept_size_wt*max(reduced_hosps['Dept_size_transformed']) + dist_wt*max(reduced_hosps['Distance transformed']) + var_wt_1*max(reduced_hosps['Blood clots post surgery Score']) + var_wt_2*max(reduced_hosps['Post surgery Sepsis Score']) + var_wt_3*max(reduced_hosps['Abdomen Open Wound Score']) + var_wt_4*max(reduced_hosps['Accidental Lacerations Score'])
+    min_score = dept_size_wt*min(reduced_hosps['Dept_size_transformed']) + dist_wt*min(reduced_hosps['Distance transformed']) + var_wt_1*min(reduced_hosps['Blood clots post surgery Score']) + var_wt_2*min(reduced_hosps['Post surgery Sepsis Score']) + var_wt_3*min(reduced_hosps['Abdomen Open Wound Score']) + var_wt_4*min(reduced_hosps['Accidental Lacerations Score'])
+  
+  elif specialty == 'Orthopedic Surgery':
+    reduced_hosps['Final Score'] = dept_size_wt*reduced_hosps['Dept_size_transformed'] + dist_wt*reduced_hosps['Distance transformed'] + var_wt_1*reduced_hosps['Hip and Knee Replacement Score'] + var_wt_2*reduced_hosps['Postop Dialysis need Score'] + var_wt_3*reduced_hosps['Blood clots post surgery Score'] + var_wt_4*reduced_hosps['Post surgery Sepsis Score']
+    max_score = dept_size_wt*max(reduced_hosps['Dept_size_transformed']) + dist_wt*max(reduced_hosps['Distance transformed']) + var_wt_1*max(reduced_hosps['Hip and Knee Replacement Score']) + var_wt_2*max(reduced_hosps['Postop Dialysis need Score']) + var_wt_3*max(reduced_hosps['Blood clots post surgery Score']) + var_wt_4*max(reduced_hosps['Post surgery Sepsis Score'])
+    min_score = dept_size_wt*min(reduced_hosps['Dept_size_transformed']) + dist_wt*min(reduced_hosps['Distance transformed']) + var_wt_1*min(reduced_hosps['Hip and Knee Replacement Score']) + var_wt_2*min(reduced_hosps['Postop Dialysis need Score']) + var_wt_3*min(reduced_hosps['Blood clots post surgery Score']) + var_wt_4*min(reduced_hosps['Post surgery Sepsis Score'])
+
+  else:
+    reduced_hosps['Final Score'] = dept_size_wt*reduced_hosps['Dept_size_transformed'] + dist_wt*reduced_hosps['Distance transformed'] + var_wt_1*reduced_hosps['Pneumonia death Score'] + var_wt_2*reduced_hosps['Num_Assist Transformed']
+    max_score = dept_size_wt*max(reduced_hosps['Dept_size_transformed']) + dist_wt*max(reduced_hosps['Distance transformed']) + var_wt_1*max(reduced_hosps['Pneumonia death Score']) + var_wt_2*max(reduced_hosps['Num_Assist Transformed'])
+    min_score = dept_size_wt*min(reduced_hosps['Dept_size_transformed']) + dist_wt*min(reduced_hosps['Distance transformed']) + var_wt_1*min(reduced_hosps['Pneumonia death Score']) + var_wt_2*min(reduced_hosps['Num_Assist Transformed'])
+
+  reduced_hosps['Final Score'] = (reduced_hosps['Final Score'] - min_score)/(max_score - min_score)
+
+  reduced_hosps = reduced_hosps.sort_values('Final Score',ascending=False)
+  return reduced_hosps
+
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div(children=[
@@ -42,6 +110,16 @@ app.layout = html.Div(children=[
     style={'text-align':'center'}
     ),
   html.Div([
+    html.P([
+        html.Label('Enter the specialty you are looking for:'),
+        # dcc.Input(id='mother_birth', value=1952, type='number'),
+        dcc.Dropdown(
+            id='specialty',
+            options=[{'label': i, 'value':i} for i in ['OB/GYN','Orthopedic Surgery','Pediatric Care']],\
+            value='OB/GYN'
+        )
+    ],
+    style={'width': '250px'}),
     html.P([
       html.Label('Enter a ZIP code to search around:'),
       dcc.Input(id='ZIP-code-state', type='text', placeholder='Enter a ZIP code')]),
@@ -53,8 +131,9 @@ app.layout = html.Div(children=[
             value=str(5),
             labelStyle={'display': 'inline-block'}
         )]),
+    html.Div('Please specify how important the following are to you (higher number is better outcomes):'),
     html.P([
-      html.Label('Weight of distance'),
+      html.Label('Distance'),
       daq.Slider(
         id='distance-weight',
         min=0,
@@ -63,27 +142,45 @@ app.layout = html.Div(children=[
         marks={str(i):str(i) for i in range(11)},
         step=1)],style={'padding':10}),
     html.P([
-      html.Label('Weight of Recommendation Score'),
+      html.Label('Size of Department'),
       daq.Slider(
-        id='reco-weight',
+        id='dept-size-weight',
         min=0,
         max=10,
         value=5,
         marks={str(i):str(i) for i in range(11)},
         step=1)],style={'padding':10}),
     html.P([
-      html.Label('Weight of Mortality Rates for ER procedures'),
+      html.Label(id='slider-head-1'),
       daq.Slider(
-        id='mort-weight',
+        id='weight-1',
         min=0,
         max=10,
         value=5,
         marks={str(i):str(i) for i in range(11)},
         step=1)],style={'padding':10}),
     html.P([
-      html.Label('Weight of complications for elective procedures'),
+      html.Label(id='slider-head-2'),
       daq.Slider(
-        id='compli-weight',
+        id='weight-2',
+        min=0,
+        max=10,
+        value=5,
+        marks={str(i):str(i) for i in range(11)},
+        step=1)],style={'padding':10}),
+    html.P([
+      html.Label(id='slider-head-3'),
+      daq.Slider(
+        id='weight-3',
+        min=0,
+        max=10,
+        value=5,
+        marks={str(i):str(i) for i in range(11)},
+        step=1)],style={'padding':10}),
+    html.P([
+      html.Label(id='slider-head-4'),
+      daq.Slider(
+        id='weight-4',
         min=0,
         max=10,
         value=5,
@@ -97,16 +194,38 @@ app.layout = html.Div(children=[
   html.Div(id='table-output')
 
   ],style={'padding':10})
-    
+
+#Update the weight labels based on Department selected
+@app.callback(
+    [Output('slider-head-1', 'children'),
+     Output('slider-head-2', 'children'),
+     Output('slider-head-3', 'children'),
+     Output('slider-head-4', 'children')],
+    [Input('specialty', 'value')])
+def get_weight_labels(specialty):
+  if specialty == 'OB/GYN':
+    wt_3 = 'Rate of blood clot complications'
+    wt_4 = 'Rate of sepsis complications'
+    wt_5 = 'Rate of wound splitting open on abdomen or pelvis'
+    wt_6 = 'Rate of accidental cuts during Surgery'
+  elif specialty == 'Orthopedic Surgery':
+    wt_3 = 'Rate of surgical complications'
+    wt_4 = 'Rate of kidney complications requiring dialysis'
+    wt_5 = 'Rate of blood clot complications'
+    wt_6 = 'Rate of sepsis complications'
+  else:
+    wt_3 = 'Pneumonia mortality rate'
+    wt_4 = 'Number of assistants available'
+    wt_5 = 'N/A'
+    wt_6 = 'N/A' 
+  return wt_3, wt_4, wt_5, wt_6
+
 @app.callback(Output('output-check', 'children'),
               [Input('submit-button', 'n_clicks')],
-              [State('ZIP-code-state', 'value'),
-               State('distance-limit', 'value'),
-               State('distance-weight','value'),
-               State('reco-weight','value'),
-               State('mort-weight','value'),
-               State('compli-weight','value')])
-def update_output(n_clicks, zipc, dist, dist_wt, reco_wt, mort_wt, compli_wt):
+              [State('specialty','value'),
+               State('ZIP-code-state', 'value'),
+               State('distance-limit', 'value')])
+def check_zip(n_clicks, specialty, zipc, dist):
   if n_clicks is not None:
       temp = zip_df.loc[zip_df['Zip']==int(zipc)]
       if np.shape(temp)[0] == 0:
@@ -116,120 +235,111 @@ def update_output(n_clicks, zipc, dist, dist_wt, reco_wt, mort_wt, compli_wt):
         '''
       else:
         return u'''
-          The ZIP code entered was {},
-          Distance limit was {},
-          and the weights for Distance, Recommendation scores, Mortality and complications were {}, {}, {}, {}.
-          For these values, the recommended hospital is:
-      '''.format(zipc,int(dist),dist_wt,reco_wt,mort_wt,compli_wt)
+          You searched for {} departments in ZIP code {} with a distance limit of {}.
+          The recommended hospitals are as follows:
+      '''.format(specialty, zipc,int(dist))
 
 
 @app.callback(Output('hosp-output', 'children'),
               [Input('submit-button', 'n_clicks')],
-              [State('ZIP-code-state', 'value'),
+              [State('specialty', 'value'),
+               State('ZIP-code-state', 'value'),
                State('distance-limit', 'value'),
                State('distance-weight','value'),
-               State('reco-weight','value'),
-               State('mort-weight','value'),
-               State('compli-weight','value')])
-def get_hospital(n_clicks, zipc, dist, dist_wt, reco_wt, mort_wt, compli_wt):
+               State('dept-size-weight','value'),
+               State('weight-1','value'),
+               State('weight-2','value'),
+               State('weight-3','value'),
+               State('weight-4','value')])
+def get_hospital(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt_1, var_wt_2, var_wt_3, var_wt_4):
     if n_clicks is not None:
-      temp = zip_df.loc[zip_df['Zip']==int(zipc)]
-      if np.shape(temp)[0] != 0:
-        lat1 = temp['Latitude'].iloc[0]
-        long1 = temp['Longitude'].iloc[0]
+      reduced_hosps = get_relevant_hosps(zipc,dist,specialty)
+      #If all weights are set to zero:
+      if (dist_wt + dept_size_wt + var_wt_1 + var_wt_2 + var_wt_3 + var_wt_4) == 0:
+        dist_wt = 1
+        dept_size_wt = 1
+        var_wt_1 = 1
+        var_wt_2 = 1
+        var_wt_3 = 1
+        var_wt_4 = 1
+      #Weight all the rows for a final score:
+      reduced_hosps = compute_final_score(reduced_hosps,specialty, dept_size_wt, dist_wt, var_wt_1, var_wt_2, var_wt_3, var_wt_4)
+      hosp_name = reduced_hosps['Hospital name'].iloc[0]
+      hosp_score = round(reduced_hosps['Final Score'].iloc[0]*100)
+      return u'''
+          {} with a composite score of {}/100
 
-        reduced_hosps = master_df_week2[(master_df_week2['Latitude'].astype(float) < (lat1 + 1).astype(float))]
-        reduced_hosps = reduced_hosps[(reduced_hosps['Latitude'].astype(float) > (lat1 - 1).astype(float))]
-        reduced_hosps = reduced_hosps[(reduced_hosps['Longitude'] < (long1 + 1))]
-        reduced_hosps = reduced_hosps[(reduced_hosps['Longitude'] > (long1 - 1))]
-
-        def get_distance(row):
-          row['Distance'] = get_distance_haversine(lat1,float(row['Latitude']),long1,float(row['Longitude']))
-          return row
-
-        reduced_hosps = reduced_hosps.apply(get_distance,1)
-        reduced_hosps = reduced_hosps[reduced_hosps['Distance'] < int(dist)]
-
-        reduced_hosps['Distance transformed'] = -1*(reduced_hosps['Distance'] - np.mean(reduced_hosps['Distance']))/np.std(reduced_hosps['Distance'])
-
-        #If all weights are set to zero:
-        if (dist_wt + reco_wt + mort_wt + compli_wt) == 0:
-          dist_wt = 1
-          reco_wt = 1
-          mort_wt = 1
-          compli_wt = 1
-        #Weight all the rows for a final score:
-        reduced_hosps['Final Score'] = reco_wt*reduced_hosps['Review Score Transformed'] + dist_wt*reduced_hosps['Distance transformed'] + mort_wt*reduced_hosps['Mortality transformed'] + compli_wt*reduced_hosps['Complications transformed']
-        max_score = reco_wt*max(reduced_hosps['Review Score Transformed']) + dist_wt*max(reduced_hosps['Distance transformed']) + mort_wt*max(reduced_hosps['Mortality transformed']) + compli_wt*max(reduced_hosps['Complications transformed'])
-        min_score = reco_wt*min(reduced_hosps['Review Score Transformed']) + dist_wt*min(reduced_hosps['Distance transformed']) + mort_wt*min(reduced_hosps['Mortality transformed']) + compli_wt*min(reduced_hosps['Complications transformed'])
-
-        reduced_hosps['Final Score'] = (reduced_hosps['Final Score'] - min_score)/(max_score - min_score)
-
-        reduced_hosps = reduced_hosps.sort_values('Final Score',ascending=False)
-        hosp_name = reduced_hosps['Hospital name'].iloc[0]
-        hosp_score = round(reduced_hosps['Final Score'].iloc[0]*100)
-        return u'''
-            {} with a composite score of {}/100
-
-        '''.format(hosp_name, hosp_score)
+      '''.format(hosp_name, hosp_score)
 
 @app.callback(Output('table-output','children'),
               [Input('submit-button', 'n_clicks')],
-              [State('ZIP-code-state', 'value'),
+              [State('specialty', 'value'),
+               State('ZIP-code-state', 'value'),
                State('distance-limit', 'value'),
                State('distance-weight','value'),
-               State('reco-weight','value'),
-               State('mort-weight','value'),
-               State('compli-weight','value')])
-def display_table(n_clicks, zipc, dist, dist_wt, reco_wt, mort_wt, compli_wt):
+               State('dept-size-weight','value'),
+               State('weight-1','value'),
+               State('weight-2','value'),
+               State('weight-3','value'),
+               State('weight-4','value')])
+def display_table(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt_1, var_wt_2, var_wt_3, var_wt_4):
     if n_clicks is not None:
-      temp = zip_df.loc[zip_df['Zip']==int(zipc)]
-      if np.shape(temp)[0] != 0:
-        lat1 = temp['Latitude'].iloc[0]
-        long1 = temp['Longitude'].iloc[0]
+      reduced_hosps = get_relevant_hosps(zipc,dist,specialty)
+    
+      #If all weights are set to zero:
+      if (dist_wt + dept_size_wt + var_wt_1 + var_wt_2) == 0:
+        dist_wt = 1
+        dept_size_wt = 1
+        var_wt_1 = 1
+        var_wt_2 = 1
+      #Weight all the rows for a final score:
+      reduced_hosps = compute_final_score(reduced_hosps,specialty, dept_size_wt, dist_wt, var_wt_1, var_wt_2, var_wt_3, var_wt_4)
 
-        reduced_hosps = master_df_week2[(master_df_week2['Latitude'].astype(float) < (lat1 + 1).astype(float))]
-        reduced_hosps = reduced_hosps[(reduced_hosps['Latitude'].astype(float) > (lat1 - 1).astype(float))]
-        reduced_hosps = reduced_hosps[(reduced_hosps['Longitude'] < (long1 + 1))]
-        reduced_hosps = reduced_hosps[(reduced_hosps['Longitude'] > (long1 - 1))]
+      if specialty == 'OB/GYN':
+        sel_cols = ['Hospital name','Num_OB/GYN','Blood clots post surgery Score','Post surgery Sepsis Score','Abdomen Open Wound Score','Accidental Lacerations Score']
+        df1 = master_df.loc[reduced_hosps.index[:5],sel_cols]
+        df1.rename(columns={'Num_OB/GYN':'Number of Specialists',
+                            'Blood clots post surgery Score':'Rate of blood clot complications',
+                            'Post surgery Sepsis Score':'Rate of Sepsis post surgery',
+                            'Abdomen Open Wound Score':'Rate of wound opening in abdomen post surgery',
+                            'Accidental Lacerations Score':'Rate of accidental lacerations during surgery'}, inplace=True)
+        df2 = reduced_hosps[['Hospital name','Distance','Final Score']]
+        df2 = df2.iloc[:5,:]
+        final_table = df1.merge(df2,left_on='Hospital name',right_on='Hospital name')
+        final_cols = ['Hospital name','Distance','Number of Specialists','Rate of blood clot complications','Rate of Sepsis post surgery','Rate of wound opening in abdomen post surgery','Rate of accidental lacerations during surgery','Final Score']
+        final_table = final_table[final_cols]
+      elif specialty == 'Orthopedic Surgery':
+        sel_cols = ['Hospital name','Num_Ortho','Hip and Knee Replacement Score','Postop Dialysis need Score','Blood clots post surgery Score','Post surgery Sepsis Score']
+        df1 = master_df.loc[reduced_hosps.index[:5],sel_cols]
+        df1.rename(columns={'Num_Ortho':'Number of Specialists',
+                            'Blood clots post surgery Score':'Rate of blood clot complications',
+                            'Post surgery Sepsis Score':'Rate of Sepsis post surgery',
+                            'Hip and Knee Replacement Score':'Rate of complications for hip/knee replacements',
+                            'Postop Dialysis need Score':'Rate of kidney injury requiring Dialysis post surgery'}, inplace=True)
+        df2 = reduced_hosps[['Hospital name','Distance','Final Score']]
+        df2 = df2.iloc[:5,:]
+        final_table = df1.merge(df2,left_on='Hospital name',right_on='Hospital name')
+        final_cols = ['Hospital name','Distance','Number of Specialists','Rate of complications for hip/knee replacements','Rate of kidney injury requiring Dialysis post surgery','Rate of blood clot complications','Rate of Sepsis post surgery','Final Score']
+        final_table = final_table[final_cols]
+      else:
+        sel_cols = ['Hospital name','Num_Pediatric','Pneumonia death Score','Num_Assist']
+        df1 = master_df.loc[reduced_hosps.index[:5],sel_cols]
+        df1.rename(columns={'Num_Pediatric':'Number of Specialists',
+                            'Pneumonia death Score':'Mortality rate for Pneumonia',
+                            'Num_Assist':'Number of Assistants on-site'}, inplace=True)
+        df2 = reduced_hosps[['Hospital name','Distance','Final Score']]
+        df2 = df2.iloc[:5,:]
+        final_table = df1.merge(df2,left_on='Hospital name',right_on='Hospital name')
+        final_cols = ['Hospital name','Distance','Number of Specialists','Mortality rate for Pneumonia','Number of Assistants on-site','Final Score']
+        final_table = final_table[final_cols]
 
-        def get_distance(row):
-          row['Distance'] = get_distance_haversine(lat1,float(row['Latitude']),long1,float(row['Longitude']))
-          return row
-
-        reduced_hosps = reduced_hosps.apply(get_distance,1)
-        reduced_hosps = reduced_hosps[reduced_hosps['Distance'] < int(dist)]
-
-        reduced_hosps['Distance transformed'] = -1*(reduced_hosps['Distance'] - np.mean(reduced_hosps['Distance']))/np.std(reduced_hosps['Distance'])
-
-        #If all weights are set to zero:
-        if (dist_wt + reco_wt + mort_wt + compli_wt) == 0:
-          dist_wt = 1
-          reco_wt = 1
-          mort_wt = 1
-          compli_wt = 1
-        #Weight all the rows for a final score:
-        reduced_hosps['Final Score'] = reco_wt*reduced_hosps['Review Score Transformed'] + dist_wt*reduced_hosps['Distance transformed'] + mort_wt*reduced_hosps['Mortality transformed'] + compli_wt*reduced_hosps['Complications transformed']
-        max_score = reco_wt*max(reduced_hosps['Review Score Transformed']) + dist_wt*max(reduced_hosps['Distance transformed']) + mort_wt*max(reduced_hosps['Mortality transformed']) + compli_wt*max(reduced_hosps['Complications transformed'])
-        min_score = reco_wt*min(reduced_hosps['Review Score Transformed']) + dist_wt*min(reduced_hosps['Distance transformed']) + mort_wt*min(reduced_hosps['Mortality transformed']) + compli_wt*min(reduced_hosps['Complications transformed'])
-
-        reduced_hosps['Final Score'] = (reduced_hosps['Final Score'] - min_score)/(max_score - min_score)
-
-        reduced_hosps = reduced_hosps.sort_values('Final Score',ascending=False)
-
-        sel_cols = ['Hospital name','Distance','Review Score','Mortality transformed','Complications transformed','Final Score']
-        final_table = reduced_hosps[sel_cols]
-        final_table['Final Score'] = round(final_table['Final Score']*100)
-        final_table['Distance'] = round(final_table['Distance'],2)
-        final_table['Mortality transformed'] = round(final_table['Mortality transformed'],2)
-        final_table['Complications transformed'] = round(final_table['Complications transformed'],2)
-        
-        if np.shape(final_table)[0] > 5:
-          final_table = final_table.iloc[:5,:]    
-        return dash_table.DataTable(
-          columns=[{"name": i, "id": i} for i in final_table.columns],
-          data=final_table.to_dict('records')
-          )
+      final_table['Final Score'] = round(final_table['Final Score']*100)
+      final_table['Distance'] = round(final_table['Distance'],2)
+      
+      return dash_table.DataTable(
+        columns=[{"name": i, "id": i} for i in final_table.columns],
+        data=final_table.to_dict('records')
+        )
 
 
 if __name__ == '__main__':
