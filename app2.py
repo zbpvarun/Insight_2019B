@@ -224,7 +224,7 @@ def display_map_and_hosps(reduced_hosps,zipc,dist):
               "autosize": True,
               "hovermode": "closest",
               "mapbox": {
-                  "accesstoken": os.environ.get("MAPBOX_KEY"),
+                  "accesstoken": MAPBOX_KEY,
                   "bearing": 0,
                   "center": {
                       "lat": 40,
