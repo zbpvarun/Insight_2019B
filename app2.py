@@ -22,7 +22,7 @@ master_df_transformed = pd.read_csv('./Data/master_df_transformed.csv',dtype={'P
 zip_df = pd.read_csv('./Data/Zip_Code_data_cleaned.csv')
 
 #This token is specific to this app and will not work for other applications:
-MAPBOX_KEY = 'pk.eyJ1IjoiemJwdmFydW4iLCJhIjoiY2p4NG9oOW03MDM0ajQzbzBqaHI5OWp0bSJ9.SafiHJznt2T_kIL2Xim3Yw'
+MAPBOX_KEY = 'sk.eyJ1IjoiemJwdmFydW4iLCJhIjoiY2p4NG9zYW84MGMwajQ5dDZpcmZ6bTNzYSJ9.gLDZ-K0JIJGgokXeofgbCw'
 
 def get_distance_haversine(lat1,lat2,long1,long2):
     import math
