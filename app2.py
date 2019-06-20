@@ -15,6 +15,7 @@ import plotly.graph_objs as go
 from plotly import tools
 
 import os
+from credentials import Credentials
 
 #Load data and define functions for analysis:
 master_df = pd.read_csv('./Data/Master_df.csv',dtype={'Provider ID':str})
@@ -22,8 +23,8 @@ master_df_transformed = pd.read_csv('./Data/master_df_transformed.csv',dtype={'P
 zip_df = pd.read_csv('./Data/Zip_Code_data_cleaned.csv')
 
 #This token is specific to this app and will not work for other applications:
-#MAPBOX_KEY = 'pk.eyJ1IjoiemJwdmFydW4iLCJhIjoiY2p4NHEza2RlMGNjYjN6bndxdGxvNTBwdyJ9.y5Dc5xnrqi1oQcKwHB5Y2A'
-MAPBOX_KEY = 'pk.eyJ1IjoiamFja3AiLCJhIjoidGpzN0lXVSJ9.7YK6eRwUNFwd3ODZff6JvA'
+MAPBOX_KEY = Credentials.MAPBOX_KEY
+#MAPBOX_KEY = 'pk.eyJ1IjoiamFja3AiLCJhIjoidGpzN0lXVSJ9.7YK6eRwUNFwd3ODZff6JvA'
 
 def get_distance_haversine(lat1,lat2,long1,long2):
     import math
