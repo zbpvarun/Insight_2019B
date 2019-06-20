@@ -21,6 +21,9 @@ master_df = pd.read_csv('./Data/Master_df.csv',dtype={'Provider ID':str})
 master_df_transformed = pd.read_csv('./Data/master_df_transformed.csv',dtype={'Provider ID':str})
 zip_df = pd.read_csv('./Data/Zip_Code_data_cleaned.csv')
 
+#This token is specific to this app and will not work for other applications:
+MAPBOX_KEY = 'pk.eyJ1IjoiemJwdmFydW4iLCJhIjoiY2p4NG9oOW03MDM0ajQzbzBqaHI5OWp0bSJ9.SafiHJznt2T_kIL2Xim3Yw'
+
 def get_distance_haversine(lat1,lat2,long1,long2):
     import math
     del_lat = math.radians(lat1 - lat2)
@@ -190,7 +193,7 @@ def display_map_and_hosps(reduced_hosps,zipc,dist):
               "autosize": True,
               "hovermode": "closest",
               "mapbox": {
-                  "accesstoken": os.environ.get("MAPBOX_KEY"),
+                  "accesstoken": MAPBOX_KEY,
                   "bearing": 0,
                   "center": {
                       "lat": lat1,
