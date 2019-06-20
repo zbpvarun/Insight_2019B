@@ -22,8 +22,8 @@ master_df_transformed = pd.read_csv('./Data/master_df_transformed.csv',dtype={'P
 zip_df = pd.read_csv('./Data/Zip_Code_data_cleaned.csv')
 
 #This token is specific to this app and will not work for other applications:
-MAPBOX_KEY = 'pk.eyJ1IjoiemJwdmFydW4iLCJhIjoiY2p4NHEza2RlMGNjYjN6bndxdGxvNTBwdyJ9.y5Dc5xnrqi1oQcKwHB5Y2A'
-#MAPBOX_KEY = 'pk.eyJ1IjoiamFja3AiLCJhIjoidGpzN0lXVSJ9.7YK6eRwUNFwd3ODZff6JvA'
+#MAPBOX_KEY = 'pk.eyJ1IjoiemJwdmFydW4iLCJhIjoiY2p4NHEza2RlMGNjYjN6bndxdGxvNTBwdyJ9.y5Dc5xnrqi1oQcKwHB5Y2A'
+MAPBOX_KEY = 'pk.eyJ1IjoiamFja3AiLCJhIjoidGpzN0lXVSJ9.7YK6eRwUNFwd3ODZff6JvA'
 
 def get_distance_haversine(lat1,lat2,long1,long2):
     import math
@@ -317,7 +317,7 @@ app.layout = html.Div(children=[
     html.Div([
       html.Div(children=[
         html.Div(id='output-check'),
-        html.H2(id='hosp-output')])
+        html.H3(id='hosp-output')])
       ],className='col-md-8')
     ],className="row")
   ,
@@ -446,7 +446,7 @@ def check_zip(n_clicks, specialty, zipc, dist):
       else:
         return u'''
           You searched for {} departments in ZIP code {} with a distance limit of {}.
-          The recommended hospitals are as follows:
+          The Top 5 hospitals are shown below:
       '''.format(specialty, zipc,int(dist))
 
 
@@ -474,12 +474,28 @@ def get_hospital(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt_
         var_wt_4 = 1
       #Weight all the rows for a final score:
       reduced_hosps = compute_final_score(reduced_hosps,specialty, dept_size_wt, dist_wt, var_wt_1, var_wt_2, var_wt_3, var_wt_4)
-      hosp_name = reduced_hosps['Hospital name'].iloc[0]
-      hosp_score = round(reduced_hosps['Final Score'].iloc[0]*100)
-      return u'''
-          {} with a composite score of {}/100
+      #hosp_name = reduced_hosps['Hospital name'].iloc[0]
+      reduced_hosps['Final Score'] = round(reduced_hosps['Final Score']*100)
+      if np.shape(reduced_hosps)[0] > 5:
+        reduced_hosps = reduced_hosps.iloc[:5,:]
+      reduced_hosps['Ranking'] = None
+      sel_cols = ['Ranking','Hospital name','Final Score']
+      reduced_hosps = reduced_hosps[sel_cols]
+      for i in np.arange(np.shape(reduced_hosps)[0]):
+        reduced_hosps.iloc[i,0] = (i+1)
+      
+      return dash_table.DataTable(
+          data=reduced_hosps.to_dict('records'),
+          columns=[{'id': c, 'name': c} for c in reduced_hosps.columns],
+          style_cell_conditional=[
+              {
+                  'if': {'column_id': c},
+                  'textAlign': 'left'
+              } for c in ['Ranking','Hospital name']
+          ],
 
-      '''.format(hosp_name, hosp_score)
+          style_as_list_view=True,
+      )
 
 @app.callback(Output('charts-output','figure'),
               [Input('submit-button', 'n_clicks')],
