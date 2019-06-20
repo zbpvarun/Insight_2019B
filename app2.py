@@ -12,6 +12,7 @@ import pandas as pd
 
 import plotly.plotly as py
 import plotly.graph_objs as go
+from plotly import tools
 
 import os
 
@@ -152,13 +153,25 @@ def get_final_table(reduced_hosps,specialty):
   final_table['Distance'] = round(final_table['Distance'],2)
   return final_table
 
-def display_map_and_hosps(reduced_hosps,zipc):
+def display_map_and_hosps(reduced_hosps,zipc,dist):
   
   if zipc is not None:
     temp = zip_df.loc[zip_df['Zip']==int(zipc)]
     if np.shape(temp)[0] != 0:
       lat1 = temp['Latitude'].iloc[0]
       long1 = temp['Longitude'].iloc[0]
+      if int(dist) == 5:
+        marker_size = 10
+        zoom = 10
+      elif int(dist) == 10:
+        marker_size = 10
+        zoom = 9
+      elif int(dist) == 20:
+        marker_size = 8
+        zoom = 7
+      elif int(dist) == 50:
+        marker_size = 6
+        zoom = 6
       return {
           "data": [
                   {
@@ -168,7 +181,7 @@ def display_map_and_hosps(reduced_hosps,zipc):
                       "text": reduced_hosps['Hospital name'],
                       "mode": "markers",
                       "marker": {
-                          "size": 10,
+                          "size": marker_size,
                           "opacity": 1.0
                       }
                   }
@@ -184,7 +197,7 @@ def display_map_and_hosps(reduced_hosps,zipc):
                       "lon": long1
                   },
                   "pitch": 0,
-                  "zoom": 10,
+                  "zoom": zoom,
                   "style": "outdoors"
               }
           }
@@ -220,6 +233,40 @@ def display_map_and_hosps(reduced_hosps,zipc):
               }
           }
       }
+
+def make_comparison_graphs(final_table,specialty):
+  if (specialty == 'OB/GYN') | (specialty == 'Orthopedic Surgery'):
+    num_plots = 6
+    temp = final_table.columns[1:-1].to_list()
+    fig = tools.make_subplots(rows=2,cols=3,subplot_titles=temp)
+    for i in np.arange(num_plots):
+      trace = go.Bar(
+        x=final_table.iloc[:,0],
+        y=final_table.iloc[:,(i+1)]
+        )
+      row_var = int(np.floor(i/3) + 1)
+      col_var = int(i%3 + 1)
+      fig.append_trace(trace,row_var,col_var)
+      fig['layout'].update(xaxis = dict(showticklabels=False), xaxis2 = dict(showticklabels=False),
+                        xaxis3 = dict(showticklabels=False), xaxis4 = dict(showticklabels=False),
+                        xaxis5 = dict(showticklabels=False), xaxis6 = dict(showticklabels=False))
+  else:
+    num_plots = 4
+    fig = tools.make_subplots(rows=2,cols=2,subplot_titles=final_table.columns[1:-2].to_list())
+    for i in np.arange(num_plots):
+      trace = go.Bar(
+        x=final_table.iloc[:,0],
+        y=final_table.iloc[:,(i+1)]
+        )
+      row_var = int(np.floor(i/2) + 1)
+      col_var = int(i%2 + 1)
+      fig.append_trace(trace,row_var,col_var)
+      fig['layout'].update(xaxis = dict(showticklabels=False), xaxis2 = dict(showticklabels=False),
+                        xaxis3 = dict(showticklabels=False), xaxis4 = dict(showticklabels=False))
+
+  fig['layout'].update(title = 'Metrics for each hospital')
+
+  return fig
 
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
@@ -335,7 +382,7 @@ app.layout = html.Div(children=[
   html.Hr(),
   #Final row with table for now:
   html.Div([html.Div([
-    html.Div(id='table-output')
+    dcc.Graph(id='charts-output')
     ],className="col-md-12")
   ],className="row")
   
@@ -375,9 +422,9 @@ def get_weight_labels(specialty):
 def populate_map(n_clicks,zipc,specialty,dist):
   if zipc is not None:
     reduced_hosps = get_relevant_hosps(zipc,dist,specialty)
-    return display_map_and_hosps(reduced_hosps,zipc)
+    return display_map_and_hosps(reduced_hosps,zipc,dist)
   else:
-    return display_map_and_hosps(master_df,zipc)
+    return display_map_and_hosps(master_df,zipc,dist)
 
 @app.callback(Output('output-check', 'children'),
               [Input('submit-button', 'n_clicks')],
@@ -430,7 +477,7 @@ def get_hospital(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt_
 
       '''.format(hosp_name, hosp_score)
 
-@app.callback(Output('table-output','children'),
+@app.callback(Output('charts-output','figure'),
               [Input('submit-button', 'n_clicks')],
               [State('specialty', 'value'),
                State('ZIP-code-state', 'value'),
@@ -456,10 +503,21 @@ def display_table(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt
 
       final_table = get_final_table(reduced_hosps,specialty)
       
-      return dash_table.DataTable(
-        columns=[{"name": i, "id": i} for i in final_table.columns],
-        data=final_table.to_dict('records')
-        )
+      return make_comparison_graphs(final_table,specialty)
+    else:
+      return {
+        "data": [
+            {
+                "type": "bar",
+                "x": ['A','B','C'],
+                "y": [1,2,3]
+            }
+        ],
+        "layout": {
+            "title": "Enter ZIP code to continue",
+        }
+    }
+
 
 
 if __name__ == '__main__':
