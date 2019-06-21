@@ -20,6 +20,7 @@ import os
 #Load data and define functions for analysis:
 master_df = pd.read_csv('./Data/Master_df.csv',dtype={'Provider ID':str})
 master_df_transformed = pd.read_csv('./Data/master_df_transformed.csv',dtype={'Provider ID':str})
+master_df_transformed.fillna(value=0,inplace=True)
 zip_df = pd.read_csv('./Data/Zip_Code_data_cleaned.csv')
 
 #This token is specific to this app and will not work for other applications:
