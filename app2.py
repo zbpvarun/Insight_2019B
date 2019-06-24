@@ -16,6 +16,7 @@ from plotly import tools
 
 import os
 from credentials import Credentials
+from Disclaimer import discl
 
 #Load data and define functions for analysis:
 master_df = pd.read_csv('./Data/Master_df.csv',dtype={'Provider ID':str})
@@ -84,13 +85,13 @@ def get_relevant_hosps(zipc, dist, specialty):
       reduced_hosps['Num_Assist Transformed'] = pd.cut(reduced_hosps['Num_Assist'], bins=bins, labels=labels)
 
     def get_distance(row):
-      row['Distance'] = get_distance_haversine(lat1,float(row['Latitude']),long1,float(row['Longitude']))
+      row['Distance (in mi.)'] = get_distance_haversine(lat1,float(row['Latitude']),long1,float(row['Longitude']))
       return row
 
     reduced_hosps = reduced_hosps.apply(get_distance,1)
-    reduced_hosps = reduced_hosps[reduced_hosps['Distance'] < int(dist)]
+    reduced_hosps = reduced_hosps[reduced_hosps['Distance (in mi.)'] < int(dist)]
 
-    reduced_hosps['Distance transformed'] = -1*(reduced_hosps['Distance'] - np.mean(reduced_hosps['Distance']))/np.std(reduced_hosps['Distance'])
+    reduced_hosps['Distance transformed'] = -1*(reduced_hosps['Distance (in mi.)'] - np.mean(reduced_hosps['Distance (in mi.)']))/np.std(reduced_hosps['Distance (in mi.)'])
     return reduced_hosps
 
 def compute_final_score(reduced_hosps,specialty, dept_size_wt, dist_wt, var_wt_1, var_wt_2):
@@ -125,10 +126,10 @@ def get_final_table(reduced_hosps,specialty):
                         'Post surgery Sepsis Score':'Rate of Sepsis post surgery',
                         'Abdomen Open Wound Score':'Rate of suture opening in abdomen post surgery',
                         'Accidental Lacerations Score':'Rate of accidental cuts during surgery'}, inplace=True)
-    df2 = reduced_hosps[['Hospital name','Distance','Final Score']]
+    df2 = reduced_hosps[['Hospital name','Distance (in mi.)','Final Score']]
     df2 = df2.iloc[:5,:]
     final_table = df1.merge(df2,left_on='Hospital name',right_on='Hospital name')
-    final_cols = ['Hospital name','Distance','Number of Specialists','Rate of blood clot complications','Rate of Sepsis post surgery','Rate of suture opening in abdomen post surgery','Rate of accidental cuts during surgery','Final Score']
+    final_cols = ['Hospital name','Distance (in mi.)','Number of Specialists','Rate of blood clot complications','Rate of Sepsis post surgery','Rate of suture opening in abdomen post surgery','Rate of accidental cuts during surgery','Final Score']
     final_table = final_table[final_cols]
   elif specialty == 'Orthopedic Surgery':
     sel_cols = ['Hospital name','Num_Ortho','Hip and Knee Replacement Score','Postop Dialysis need Score','Blood clots post surgery Score','Post surgery Sepsis Score']
@@ -138,10 +139,10 @@ def get_final_table(reduced_hosps,specialty):
                         'Post surgery Sepsis Score':'Rate of Sepsis post surgery',
                         'Hip and Knee Replacement Score':'Rate of complications for hip/knee replacements',
                         'Postop Dialysis need Score':'Rate of kidney injury requiring Dialysis post surgery'}, inplace=True)
-    df2 = reduced_hosps[['Hospital name','Distance','Final Score']]
+    df2 = reduced_hosps[['Hospital name','Distance (in mi.)','Final Score']]
     df2 = df2.iloc[:5,:]
     final_table = df1.merge(df2,left_on='Hospital name',right_on='Hospital name')
-    final_cols = ['Hospital name','Distance','Number of Specialists','Rate of complications for hip/knee replacements','Rate of kidney injury requiring Dialysis post surgery','Rate of blood clot complications','Rate of Sepsis post surgery','Final Score']
+    final_cols = ['Hospital name','Distance (in mi.)','Number of Specialists','Rate of complications for hip/knee replacements','Rate of kidney injury requiring Dialysis post surgery','Rate of blood clot complications','Rate of Sepsis post surgery','Final Score']
     final_table = final_table[final_cols]
   else:
     sel_cols = ['Hospital name','Num_Pediatric','Pneumonia death Score','Num_Assist']
@@ -149,14 +150,14 @@ def get_final_table(reduced_hosps,specialty):
     df1.rename(columns={'Num_Pediatric':'Number of Specialists',
                         'Pneumonia death Score':'Mortality rate for Pneumonia',
                         'Num_Assist':'Number of Assistants on-site'}, inplace=True)
-    df2 = reduced_hosps[['Hospital name','Distance','Final Score']]
+    df2 = reduced_hosps[['Hospital name','Distance (in mi.)','Final Score']]
     df2 = df2.iloc[:5,:]
     final_table = df1.merge(df2,left_on='Hospital name',right_on='Hospital name')
-    final_cols = ['Hospital name','Distance','Number of Specialists','Mortality rate for Pneumonia','Number of Assistants on-site','Final Score']
+    final_cols = ['Hospital name','Distance (in mi.)','Number of Specialists','Mortality rate for Pneumonia','Number of Assistants on-site','Final Score']
     final_table = final_table[final_cols]
 
   final_table['Final Score'] = round(final_table['Final Score']*100)
-  final_table['Distance'] = round(final_table['Distance'],2)
+  final_table['Distance (in mi.)'] = round(final_table['Distance (in mi.)'],2)
   return final_table
 
 def display_map_and_hosps(reduced_hosps,zipc,dist):
@@ -372,9 +373,15 @@ app.layout = html.Div(children=[
   html.Div([html.Div([
     dcc.Graph(id='charts-output')
     ],className="col-md-12")
-  ],className="row")
+  ],className="row"),
+  html.Div([
+    html.Div([
+      html.P(id='discl-output')
+      ],className="col-md-12")
+    ],className="row")
   
   ],className="container-fluid")
+
 
 #Update the weight labels based on Department selected
 @app.callback(
@@ -395,11 +402,11 @@ def get_weight_labels(specialty):
 
 #Map callback:
 @app.callback(Output('map-output', 'figure'),
-              [Input('submit-button','n_clicks')],
+              [Input('submit-button','n_clicks'),
+               Input('distance-limit','value')],
               [State('ZIP-code-state','value'),
-               State('specialty','value'),
-               State('distance-limit','value')])
-def populate_map(n_clicks,zipc,specialty,dist):
+               State('specialty','value')])
+def populate_map(n_clicks,dist,zipc,specialty):
   if zipc is not None:
     reduced_hosps = get_relevant_hosps(zipc,dist,specialty)
     return display_map_and_hosps(reduced_hosps,zipc,dist)
@@ -407,11 +414,11 @@ def populate_map(n_clicks,zipc,specialty,dist):
     return display_map_and_hosps(master_df,zipc,dist)
 
 @app.callback(Output('output-check', 'children'),
-              [Input('submit-button', 'n_clicks')],
+              [Input('submit-button', 'n_clicks'),
+               Input('distance-limit', 'value')],
               [State('specialty','value'),
-               State('ZIP-code-state', 'value'),
-               State('distance-limit', 'value')])
-def check_zip(n_clicks, specialty, zipc, dist):
+               State('ZIP-code-state', 'value')])
+def check_zip(n_clicks, dist, specialty, zipc):
   if n_clicks is not None:
       temp = zip_df.loc[zip_df['Zip']==int(zipc)]
       if np.shape(temp)[0] == 0:
@@ -427,15 +434,15 @@ def check_zip(n_clicks, specialty, zipc, dist):
 
 
 @app.callback(Output('hosp-output', 'children'),
-              [Input('submit-button', 'n_clicks')],
+              [Input('submit-button', 'n_clicks'),
+               Input('distance-limit', 'value'),
+               Input('distance-weight','value'),
+               Input('dept-size-weight','value'),
+               Input('weight-1','value'),
+               Input('weight-2','value')],
               [State('specialty', 'value'),
-               State('ZIP-code-state', 'value'),
-               State('distance-limit', 'value'),
-               State('distance-weight','value'),
-               State('dept-size-weight','value'),
-               State('weight-1','value'),
-               State('weight-2','value')])
-def get_hospital(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt_1, var_wt_2):
+               State('ZIP-code-state', 'value')])
+def get_hospital(n_clicks, dist, dist_wt, dept_size_wt, var_wt_1, var_wt_2, specialty, zipc):
     if n_clicks is not None:
       reduced_hosps = get_relevant_hosps(zipc,dist,specialty)
       #If all weights are set to zero:
@@ -447,11 +454,12 @@ def get_hospital(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt_
       #Weight all the rows for a final score:
       reduced_hosps = compute_final_score(reduced_hosps,specialty, dept_size_wt, dist_wt, var_wt_1, var_wt_2)
       reduced_hosps['Final Score'] = round(reduced_hosps['Final Score']*100)
+      reduced_hosps['Distance (in mi.)'] = round(reduced_hosps['Distance (in mi.)'],2)
       
       if np.shape(reduced_hosps)[0] > 5:
         reduced_hosps = reduced_hosps.iloc[:5,:]
       reduced_hosps['Ranking'] = None
-      sel_cols = ['Ranking','Hospital name','Final Score']
+      sel_cols = ['Ranking','Hospital name','Distance (in mi.)','Final Score']
       reduced_hosps = reduced_hosps[sel_cols]
       for i in np.arange(np.shape(reduced_hosps)[0]):
         reduced_hosps.iloc[i,0] = (i+1)
@@ -470,15 +478,15 @@ def get_hospital(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt_
       )
 
 @app.callback(Output('charts-output','figure'),
-              [Input('submit-button', 'n_clicks')],
+              [Input('submit-button', 'n_clicks'),
+               Input('distance-limit', 'value'),
+               Input('distance-weight','value'),
+               Input('dept-size-weight','value'),
+               Input('weight-1','value'),
+               Input('weight-2','value')],
               [State('specialty', 'value'),
-               State('ZIP-code-state', 'value'),
-               State('distance-limit', 'value'),
-               State('distance-weight','value'),
-               State('dept-size-weight','value'),
-               State('weight-1','value'),
-               State('weight-2','value')])
-def display_table(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt_1, var_wt_2):
+               State('ZIP-code-state', 'value')])
+def display_table(n_clicks, dist, dist_wt, dept_size_wt, var_wt_1, var_wt_2, specialty, zipc):
     if n_clicks is not None:
       reduced_hosps = get_relevant_hosps(zipc,dist,specialty)
     
@@ -508,7 +516,11 @@ def display_table(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt
         }
     }
 
-
+@app.callback(Output('discl-output','children'),
+              [Input('submit-button', 'n_clicks')])
+def display_disclaimer(n_clicks):
+  if n_clicks is not None:
+    return discl.discl
 
 if __name__ == '__main__':
     #app.run_server(debug=True)
