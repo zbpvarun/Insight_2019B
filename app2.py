@@ -15,7 +15,7 @@ import plotly.graph_objs as go
 from plotly import tools
 
 import os
-#from credentials import Credentials
+from credentials import Credentials
 
 #Load data and define functions for analysis:
 master_df = pd.read_csv('./Data/Master_df.csv',dtype={'Provider ID':str})
@@ -24,8 +24,8 @@ master_df_transformed.fillna(value=0,inplace=True)
 zip_df = pd.read_csv('./Data/Zip_Code_data_cleaned.csv')
 
 #This token is specific to this app and will not work for other applications:
-#MAPBOX_KEY = Credentials.MAPBOX_KEY
-MAPBOX_KEY = 'pk.eyJ1IjoiamFja3AiLCJhIjoidGpzN0lXVSJ9.7YK6eRwUNFwd3ODZff6JvA'
+MAPBOX_KEY = Credentials.MAPBOX_KEY
+#MAPBOX_KEY = 'pk.eyJ1IjoiamFja3AiLCJhIjoidGpzN0lXVSJ9.7YK6eRwUNFwd3ODZff6JvA'
 
 def get_distance_haversine(lat1,lat2,long1,long2):
     import math
@@ -93,17 +93,17 @@ def get_relevant_hosps(zipc, dist, specialty):
     reduced_hosps['Distance transformed'] = -1*(reduced_hosps['Distance'] - np.mean(reduced_hosps['Distance']))/np.std(reduced_hosps['Distance'])
     return reduced_hosps
 
-def compute_final_score(reduced_hosps,specialty, dept_size_wt, dist_wt, var_wt_1, var_wt_2, var_wt_3, var_wt_4):
+def compute_final_score(reduced_hosps,specialty, dept_size_wt, dist_wt, var_wt_1, var_wt_2):
   #Utility function: Compute the final score for the relevant hospitals from all other parameters.
   if specialty == 'OB/GYN':
-    reduced_hosps['Final Score'] = dept_size_wt*reduced_hosps['Dept_size_transformed'] + dist_wt*reduced_hosps['Distance transformed'] + var_wt_1*reduced_hosps['Blood clots post surgery Score'] + var_wt_2*reduced_hosps['Post surgery Sepsis Score'] + var_wt_3*reduced_hosps['Abdomen Open Wound Score'] + var_wt_4*reduced_hosps['Accidental Lacerations Score']
-    max_score = dept_size_wt*max(reduced_hosps['Dept_size_transformed']) + dist_wt*max(reduced_hosps['Distance transformed']) + var_wt_1*max(reduced_hosps['Blood clots post surgery Score']) + var_wt_2*max(reduced_hosps['Post surgery Sepsis Score']) + var_wt_3*max(reduced_hosps['Abdomen Open Wound Score']) + var_wt_4*max(reduced_hosps['Accidental Lacerations Score'])
-    min_score = dept_size_wt*min(reduced_hosps['Dept_size_transformed']) + dist_wt*min(reduced_hosps['Distance transformed']) + var_wt_1*min(reduced_hosps['Blood clots post surgery Score']) + var_wt_2*min(reduced_hosps['Post surgery Sepsis Score']) + var_wt_3*min(reduced_hosps['Abdomen Open Wound Score']) + var_wt_4*min(reduced_hosps['Accidental Lacerations Score'])
+    reduced_hosps['Final Score'] = dept_size_wt*reduced_hosps['Dept_size_transformed'] + dist_wt*reduced_hosps['Distance transformed'] + var_wt_1*reduced_hosps['Blood clots post surgery Score'] + var_wt_1*reduced_hosps['Post surgery Sepsis Score'] + var_wt_2*reduced_hosps['Abdomen Open Wound Score'] + var_wt_2*reduced_hosps['Accidental Lacerations Score']
+    max_score = dept_size_wt*max(reduced_hosps['Dept_size_transformed']) + dist_wt*max(reduced_hosps['Distance transformed']) + var_wt_1*max(reduced_hosps['Blood clots post surgery Score']) + var_wt_1*max(reduced_hosps['Post surgery Sepsis Score']) + var_wt_2*max(reduced_hosps['Abdomen Open Wound Score']) + var_wt_2*max(reduced_hosps['Accidental Lacerations Score'])
+    min_score = dept_size_wt*min(reduced_hosps['Dept_size_transformed']) + dist_wt*min(reduced_hosps['Distance transformed']) + var_wt_1*min(reduced_hosps['Blood clots post surgery Score']) + var_wt_1*min(reduced_hosps['Post surgery Sepsis Score']) + var_wt_2*min(reduced_hosps['Abdomen Open Wound Score']) + var_wt_2*min(reduced_hosps['Accidental Lacerations Score'])
   
   elif specialty == 'Orthopedic Surgery':
-    reduced_hosps['Final Score'] = dept_size_wt*reduced_hosps['Dept_size_transformed'] + dist_wt*reduced_hosps['Distance transformed'] + var_wt_1*reduced_hosps['Hip and Knee Replacement Score'] + var_wt_2*reduced_hosps['Postop Dialysis need Score'] + var_wt_3*reduced_hosps['Blood clots post surgery Score'] + var_wt_4*reduced_hosps['Post surgery Sepsis Score']
-    max_score = dept_size_wt*max(reduced_hosps['Dept_size_transformed']) + dist_wt*max(reduced_hosps['Distance transformed']) + var_wt_1*max(reduced_hosps['Hip and Knee Replacement Score']) + var_wt_2*max(reduced_hosps['Postop Dialysis need Score']) + var_wt_3*max(reduced_hosps['Blood clots post surgery Score']) + var_wt_4*max(reduced_hosps['Post surgery Sepsis Score'])
-    min_score = dept_size_wt*min(reduced_hosps['Dept_size_transformed']) + dist_wt*min(reduced_hosps['Distance transformed']) + var_wt_1*min(reduced_hosps['Hip and Knee Replacement Score']) + var_wt_2*min(reduced_hosps['Postop Dialysis need Score']) + var_wt_3*min(reduced_hosps['Blood clots post surgery Score']) + var_wt_4*min(reduced_hosps['Post surgery Sepsis Score'])
+    reduced_hosps['Final Score'] = dept_size_wt*reduced_hosps['Dept_size_transformed'] + dist_wt*reduced_hosps['Distance transformed'] + var_wt_2*reduced_hosps['Hip and Knee Replacement Score'] + var_wt_2*reduced_hosps['Postop Dialysis need Score'] + var_wt_1*reduced_hosps['Blood clots post surgery Score'] + var_wt_1*reduced_hosps['Post surgery Sepsis Score']
+    max_score = dept_size_wt*max(reduced_hosps['Dept_size_transformed']) + dist_wt*max(reduced_hosps['Distance transformed']) + var_wt_2*max(reduced_hosps['Hip and Knee Replacement Score']) + var_wt_2*max(reduced_hosps['Postop Dialysis need Score']) + var_wt_1*max(reduced_hosps['Blood clots post surgery Score']) + var_wt_1*max(reduced_hosps['Post surgery Sepsis Score'])
+    min_score = dept_size_wt*min(reduced_hosps['Dept_size_transformed']) + dist_wt*min(reduced_hosps['Distance transformed']) + var_wt_2*min(reduced_hosps['Hip and Knee Replacement Score']) + var_wt_2*min(reduced_hosps['Postop Dialysis need Score']) + var_wt_1*min(reduced_hosps['Blood clots post surgery Score']) + var_wt_1*min(reduced_hosps['Post surgery Sepsis Score'])
 
   else:
     reduced_hosps['Final Score'] = dept_size_wt*reduced_hosps['Dept_size_transformed'] + dist_wt*reduced_hosps['Distance transformed'] + var_wt_1*reduced_hosps['Pneumonia death Score'] + var_wt_2*reduced_hosps['Num_Assist Transformed']
@@ -123,12 +123,12 @@ def get_final_table(reduced_hosps,specialty):
     df1.rename(columns={'Num_OB/GYN':'Number of Specialists',
                         'Blood clots post surgery Score':'Rate of blood clot complications',
                         'Post surgery Sepsis Score':'Rate of Sepsis post surgery',
-                        'Abdomen Open Wound Score':'Rate of wound opening in abdomen post surgery',
-                        'Accidental Lacerations Score':'Rate of accidental lacerations during surgery'}, inplace=True)
+                        'Abdomen Open Wound Score':'Rate of suture opening in abdomen post surgery',
+                        'Accidental Lacerations Score':'Rate of accidental cuts during surgery'}, inplace=True)
     df2 = reduced_hosps[['Hospital name','Distance','Final Score']]
     df2 = df2.iloc[:5,:]
     final_table = df1.merge(df2,left_on='Hospital name',right_on='Hospital name')
-    final_cols = ['Hospital name','Distance','Number of Specialists','Rate of blood clot complications','Rate of Sepsis post surgery','Rate of wound opening in abdomen post surgery','Rate of accidental lacerations during surgery','Final Score']
+    final_cols = ['Hospital name','Distance','Number of Specialists','Rate of blood clot complications','Rate of Sepsis post surgery','Rate of suture opening in abdomen post surgery','Rate of accidental cuts during surgery','Final Score']
     final_table = final_table[final_cols]
   elif specialty == 'Orthopedic Surgery':
     sel_cols = ['Hospital name','Num_Ortho','Hip and Knee Replacement Score','Postop Dialysis need Score','Blood clots post surgery Score','Post surgery Sepsis Score']
@@ -313,9 +313,9 @@ app.layout = html.Div(children=[
             options=[{'label': i, 'value': i} for i in [str(5), str(10), str(20), str(50)]],
             value=str(5),
             labelStyle={'display': 'inline-block'}
-        )])],className="col-md-2"),
+        )])],className="col-md-3"),
     html.Div([
-      html.Button(id='submit-button', children='Submit')],className="col-md-2"),
+      html.Button(id='submit-button', children='Submit')],className="col-md-1"),
     html.Div([
       html.Div(children=[
         html.Div(id='output-check'),
@@ -362,24 +362,6 @@ app.layout = html.Div(children=[
         max=10,
         value=5,
         marks={str(i):str(i) for i in range(11)},
-        step=1)],style={'padding':10}),
-    html.P([
-      html.Label(id='slider-head-3'),
-      daq.Slider(
-        id='weight-3',
-        min=0,
-        max=10,
-        value=5,
-        marks={str(i):str(i) for i in range(11)},
-        step=1)],style={'padding':10}),
-    html.P([
-      html.Label(id='slider-head-4'),
-      daq.Slider(
-        id='weight-4',
-        min=0,
-        max=10,
-        value=5,
-        marks={str(i):str(i) for i in range(11)},
         step=1)],style={'padding':10})
     ],className="col-md-4"),
     html.Div([
@@ -397,27 +379,19 @@ app.layout = html.Div(children=[
 #Update the weight labels based on Department selected
 @app.callback(
     [Output('slider-head-1', 'children'),
-     Output('slider-head-2', 'children'),
-     Output('slider-head-3', 'children'),
-     Output('slider-head-4', 'children')],
+     Output('slider-head-2', 'children')],
     [Input('specialty', 'value')])
 def get_weight_labels(specialty):
   if specialty == 'OB/GYN':
-    wt_3 = 'Rate of blood clot complications'
-    wt_4 = 'Rate of sepsis complications'
-    wt_5 = 'Rate of wound splitting open on abdomen or pelvis'
-    wt_6 = 'Rate of accidental cuts during Surgery'
+    wt_3 = 'Rate of major complications'
+    wt_4 = 'Rate of minor complications'
   elif specialty == 'Orthopedic Surgery':
-    wt_3 = 'Rate of surgical complications'
-    wt_4 = 'Rate of kidney complications requiring dialysis'
-    wt_5 = 'Rate of blood clot complications'
-    wt_6 = 'Rate of sepsis complications'
+    wt_3 = 'Rate of major complications'
+    wt_4 = 'Rate of minor complications'
   else:
     wt_3 = 'Pneumonia mortality rate'
     wt_4 = 'Number of assistants available'
-    wt_5 = 'N/A'
-    wt_6 = 'N/A' 
-  return wt_3, wt_4, wt_5, wt_6
+  return wt_3, wt_4
 
 #Map callback:
 @app.callback(Output('map-output', 'figure'),
@@ -460,24 +434,20 @@ def check_zip(n_clicks, specialty, zipc, dist):
                State('distance-weight','value'),
                State('dept-size-weight','value'),
                State('weight-1','value'),
-               State('weight-2','value'),
-               State('weight-3','value'),
-               State('weight-4','value')])
-def get_hospital(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt_1, var_wt_2, var_wt_3, var_wt_4):
+               State('weight-2','value')])
+def get_hospital(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt_1, var_wt_2):
     if n_clicks is not None:
       reduced_hosps = get_relevant_hosps(zipc,dist,specialty)
       #If all weights are set to zero:
-      if (dist_wt + dept_size_wt + var_wt_1 + var_wt_2 + var_wt_3 + var_wt_4) == 0:
+      if (dist_wt + dept_size_wt + var_wt_1 + var_wt_2) == 0:
         dist_wt = 1
         dept_size_wt = 1
         var_wt_1 = 1
         var_wt_2 = 1
-        var_wt_3 = 1
-        var_wt_4 = 1
       #Weight all the rows for a final score:
-      reduced_hosps = compute_final_score(reduced_hosps,specialty, dept_size_wt, dist_wt, var_wt_1, var_wt_2, var_wt_3, var_wt_4)
-      #hosp_name = reduced_hosps['Hospital name'].iloc[0]
+      reduced_hosps = compute_final_score(reduced_hosps,specialty, dept_size_wt, dist_wt, var_wt_1, var_wt_2)
       reduced_hosps['Final Score'] = round(reduced_hosps['Final Score']*100)
+      
       if np.shape(reduced_hosps)[0] > 5:
         reduced_hosps = reduced_hosps.iloc[:5,:]
       reduced_hosps['Ranking'] = None
@@ -507,10 +477,8 @@ def get_hospital(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt_
                State('distance-weight','value'),
                State('dept-size-weight','value'),
                State('weight-1','value'),
-               State('weight-2','value'),
-               State('weight-3','value'),
-               State('weight-4','value')])
-def display_table(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt_1, var_wt_2, var_wt_3, var_wt_4):
+               State('weight-2','value')])
+def display_table(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt_1, var_wt_2):
     if n_clicks is not None:
       reduced_hosps = get_relevant_hosps(zipc,dist,specialty)
     
@@ -521,7 +489,7 @@ def display_table(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt
         var_wt_1 = 1
         var_wt_2 = 1
       #Weight all the rows for a final score:
-      reduced_hosps = compute_final_score(reduced_hosps,specialty, dept_size_wt, dist_wt, var_wt_1, var_wt_2, var_wt_3, var_wt_4)
+      reduced_hosps = compute_final_score(reduced_hosps,specialty, dept_size_wt, dist_wt, var_wt_1, var_wt_2)
 
       final_table = get_final_table(reduced_hosps,specialty)
       
@@ -543,4 +511,5 @@ def display_table(n_clicks, specialty, zipc, dist, dist_wt, dept_size_wt, var_wt
 
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    #app.run_server(debug=True)
+    app.run_server()
