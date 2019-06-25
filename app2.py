@@ -183,7 +183,7 @@ def display_map_and_hosps(reduced_hosps,zipc,dist):
     if np.shape(temp)[0] != 0:
       lat1 = temp['Latitude'].iloc[0]
       long1 = temp['Longitude'].iloc[0]
-      if int(dist) == 5:
+      if (int(dist) == 5) | (int(dist) == 2):
         marker_size = 10
         zoom = 10
       elif int(dist) == 10:
@@ -221,7 +221,7 @@ def display_map_and_hosps(reduced_hosps,zipc,dist):
                   },
                   "pitch": 0,
                   "zoom": zoom,
-                  "style": "outdoors"
+                  "style": "outdoors" #Alternatively, could use: dark
               }
           }
       }
@@ -288,6 +288,7 @@ def make_comparison_graphs(final_table,specialty):
                         xaxis3 = dict(showticklabels=False), xaxis4 = dict(showticklabels=False))
 
   fig['layout'].update(title = 'Metrics for each hospital')
+  fig['layout'].update(showlegend = False)
 
   return fig
 
@@ -296,6 +297,8 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 server = app.server
 server.secret_key = os.environ.get("SECRET_KEY", "secret")
+
+app.title = "HospFinder"
 
 app.layout = html.Div(children=[
   html.Div([
@@ -327,7 +330,7 @@ app.layout = html.Div(children=[
       html.Label('Specify your distance limit (in miles)'),
       dcc.RadioItems(
             id='distance-limit',
-            options=[{'label': i, 'value': i} for i in [str(5), str(10), str(20), str(50)]],
+            options=[{'label': i, 'value': i} for i in [str(2), str(5), str(10), str(20), str(50)]],
             value=str(5),
             labelStyle={'display': 'inline-block'}
         )])],className="col-md-3"),
