@@ -71,6 +71,8 @@ def get_relevant_hosps(zipc, dist, specialty):
     def get_distance(row):
       row['Distance (in mi.)'] = get_distance_haversine(lat1,float(row['Latitude']),long1,float(row['Longitude']))
       return row
+    #Do this tomorrow:
+    #def get_transformed_dept_size(row):
 
     
     if specialty == 'OB/GYN':
@@ -298,13 +300,13 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 server.secret_key = os.environ.get("SECRET_KEY", "secret")
 
-app.title = "HospFinder"
+app.title = "CareFinder"
 
 app.layout = html.Div(children=[
   html.Div([
     html.Div([
     html.H1(
-    children='HospFinder',
+    children='CareFinder',
     style={'text-align':'center'}
     )],className="col-md-12")
     ],className='row')
@@ -570,5 +572,5 @@ def display_table(n_clicks, dist, dist_wt, dept_size_wt, var_wt_1, var_wt_2, spe
 #    return discl.discl
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
-    #app.run_server()
+    #app.run_server(debug=True)
+    app.run_server()
