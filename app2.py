@@ -308,7 +308,7 @@ app.layout = html.Div(children=[
     html.H1(
     children='CareFinder',
     style={'text-align':'center'}
-    )],className="col-md-12")
+    )],className="col-12")
     ],className='row')
   ,
 
@@ -335,14 +335,14 @@ app.layout = html.Div(children=[
             options=[{'label': i, 'value': i} for i in [str(2), str(5), str(10), str(20), str(50)]],
             value=str(5),
             labelStyle={'display': 'inline-block'}
-        )])],className="col-md-3"),
+        )])],className="col-3"),
     html.Div([
-      html.Button(id='submit-button', children='Submit')],className="col-md-1"),
+      html.Button(id='submit-button', children='Submit')],className="col-1"),
     html.Div([
       html.Div(children=[
         html.Div(id='output-check'),
         html.H3(id='hosp-output')])
-      ],className='col-md-8')
+      ],className='col-8')
     ],className="row")
   ,
   #Start next row with sliders and radar chart:
@@ -385,15 +385,15 @@ app.layout = html.Div(children=[
         value=5,
         marks={str(i):str(i) for i in range(11)},
         step=1)],style={'padding':10})
-    ],className="col-md-4"),
+    ],className="col-4"),
     html.Div([
-      dcc.Graph(id='map-output')],className="col-md-8")
+      dcc.Graph(id='map-output')],className="col-8")
     ],className="row"),
   html.Hr(),
   #Final row with table for now:
   html.Div([html.Div([
     dcc.Graph(id='charts-output')
-    ],className="col-md-12")
+    ],className="col-12")
   ],className="row")
   #,
   #html.Div([
