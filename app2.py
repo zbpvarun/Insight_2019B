@@ -264,34 +264,67 @@ def make_comparison_graphs(final_table,specialty):
     num_plots = 6
     temp = final_table.columns[1:-1].to_list()
     fig = tools.make_subplots(rows=2,cols=3,subplot_titles=temp)
+    colors = ['darkblue','blue','green','orange','red']
     for i in np.arange(num_plots):
+      # for j in np.arange(np.shape(final_table)[0]):
+      #   if final_table.iloc[j,(i+1)] == 'Not Available':
+      #     y = np.asarray(0)
+      #   else:
+      #     y = np.asarray(final_table.iloc[j,(i+1)])
+      #   if i == 0:
+      #       legend = True
+      #   else:
+      #       legend = False
+      #   trace = go.Bar(
+      #     x = np.asarray(j),
+      #     y = y,
+      #     name = final_table.iloc[j,0],
+      #     marker = {'color':colors[j]},
+      #     showlegend = legend
+      #     #orientation = 'v'
+      #     )
       trace = go.Bar(
-        x=final_table.iloc[:,0],
-        y=final_table.iloc[:,(i+1)]
-        )
+         x=final_table.iloc[:,0],
+         y=final_table.iloc[:,(i+1)],
+         marker=dict(
+         color=colors),
+         
+         #name = final_table.iloc[:,0]
+         )  
       row_var = int(np.floor(i/3) + 1)
       col_var = int(i%3 + 1)
       fig.append_trace(trace,row_var,col_var)
-      fig['layout'].update(xaxis = dict(showticklabels=False), xaxis2 = dict(showticklabels=False),
+      print(final_table.iloc[:,i+1])
+
+
+    fig['layout'].update(xaxis = dict(showticklabels=False), xaxis2 = dict(showticklabels=False),
                         xaxis3 = dict(showticklabels=False), xaxis4 = dict(showticklabels=False),
                         xaxis5 = dict(showticklabels=False), xaxis6 = dict(showticklabels=False))
   else:
     num_plots = 4
     fig = tools.make_subplots(rows=2,cols=2,subplot_titles=final_table.columns[1:-2].to_list())
+    colors = ['darkblue','blue','green','orange','red']
     for i in np.arange(num_plots):
+      # if i == 0:
+      #     legend = True
+      # else:
+      #     legend = False
+        
       trace = go.Bar(
         x=final_table.iloc[:,0],
-        y=final_table.iloc[:,(i+1)]
+        y=final_table.iloc[:,(i+1)],
+        marker=dict(
+         color=colors),
         )
       row_var = int(np.floor(i/2) + 1)
       col_var = int(i%2 + 1)
       fig.append_trace(trace,row_var,col_var)
-      fig['layout'].update(xaxis = dict(showticklabels=False), xaxis2 = dict(showticklabels=False),
+    fig['layout'].update(xaxis = dict(showticklabels=False), xaxis2 = dict(showticklabels=False),
                         xaxis3 = dict(showticklabels=False), xaxis4 = dict(showticklabels=False))
 
   fig['layout'].update(title = 'Metrics for each hospital')
   fig['layout'].update(showlegend = False)
-
+  
   return fig
 
 
@@ -341,7 +374,8 @@ app.layout = html.Div(children=[
     html.Div([
       html.Div(children=[
         html.Div(id='output-check'),
-        html.H3(id='hosp-output')])
+        html.H3(id='hosp-output'),
+        html.Div(id='graph-referral')])
       ],className='col-8')
     ],className="row")
   ,
@@ -405,6 +439,16 @@ app.layout = html.Div(children=[
   ],className="container-fluid")
 
 
+@app.callback(
+    Output('graph-referral', 'children'),
+    [Input('submit-button','n_clicks')])
+def refer_to_graphs(n_clicks):
+  if n_clicks is not None:
+    return u'''
+    See graphs below the map for a detailed breakdown of each metric for these hospitals.
+    If a metric is not displayed for a hospital, they either did not report it or did not have enough cases 
+    to infer it statistically.
+    '''
 #Update the weight labels based on Department selected
 @app.callback(
     [Output('slider-head-1', 'children'),
@@ -572,5 +616,5 @@ def display_table(n_clicks, dist, dist_wt, dept_size_wt, var_wt_1, var_wt_2, spe
 #    return discl.discl
 
 if __name__ == '__main__':
-    #app.run_server(debug=True)
-    app.run_server()
+    app.run_server(debug=True)
+    #app.run_server()
